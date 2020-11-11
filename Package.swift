@@ -21,6 +21,7 @@ let package = Package(
     // Targets can depend on other targets in this package, and on products in packages this package depends on.
     .target(name: "AdventOfCode2019", resources: [
       .copy("Day1/input-day1.txt"),
+      .copy("Day2/input-day2.txt"),
     ]),
     .testTarget(name: "AdventOfCode2019Tests", dependencies: ["AdventOfCode2019"]),
 
