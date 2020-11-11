@@ -7,5 +7,6 @@
 
 import Foundation
 import AdventOfCode2020
+//import ArgumentParser
 
-print(Day1().text)
+print("Hello world")
