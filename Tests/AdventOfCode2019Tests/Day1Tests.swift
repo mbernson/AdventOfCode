@@ -8,7 +8,7 @@ final class Day1Tests: XCTestCase {
   }
 
   func testPuzzle1() throws {
-    XCTAssertEqual(try Day1().run1(), 3308377)
+    XCTAssertEqual(try Day1().runPart1(), 3308377)
   }
 
   func testTotalFuel() throws {
@@ -16,6 +16,6 @@ final class Day1Tests: XCTestCase {
   }
 
   func testPuzzle2() throws {
-    XCTAssertEqual(try Day1().run2(), 4959709)
+    XCTAssertEqual(try Day1().runPart2(), 4959709)
   }
 }

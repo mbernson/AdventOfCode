@@ -12,7 +12,7 @@ public struct Day3 {
 
   public init() {}
 
-  public func run1() throws {
+  public func runPart1() throws {
     let string = try String(contentsOf: inputURL)
     let parts = string.components(separatedBy: "\n")
     if let d = try closestIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
@@ -22,10 +22,47 @@ public struct Day3 {
     }
   }
 
+  public func runPart2() throws {
+    let string = try String(contentsOf: inputURL)
+    let parts = string.components(separatedBy: "\n")
+    if let d = try lowestCostIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
+      print(String(format: "Lowest costing intersection: %d steps", d))
+    } else {
+      print("No intersections found!")
+    }
+  }
+
   func parseInstructions(string: String) throws -> [Instruction] {
     try string
       .components(separatedBy: ",")
       .map(Instruction.init)
+  }
+
+  func lowestCostIntersectionToOrigin(firstWire: String, secondWire: String) throws -> Int? {
+    lowestCostIntersectionToOrigin(
+      firstWire: try parseInstructions(string: firstWire),
+      secondWire: try parseInstructions(string: secondWire)
+    )
+  }
+
+  typealias IntersectionDistance = (distance: Int, point: Point)
+
+  func lowestCostIntersectionToOrigin(firstWire: [Instruction], secondWire: [Instruction]) -> Int? {
+    let origin = Point.zero
+    let firstPoints = points(for: firstWire, origin: origin)
+    let secondPoints = points(for: secondWire, origin: origin)
+    var intersecting = Set(firstPoints).intersection(Set(secondPoints))
+    intersecting.remove(origin)
+
+    let distances = intersecting.compactMap { intersectionPoint -> IntersectionDistance in
+      let firstCost = numberOfPoints(points: firstPoints, untilReaching: intersectionPoint)!
+      let secondCost = numberOfPoints(points: secondPoints, untilReaching: intersectionPoint)!
+      return (firstCost + secondCost, intersectionPoint)
+    }.sorted(by: { a, b in
+      a.distance < b.distance
+    })
+    let closest = distances.first
+    return closest?.distance
   }
 
   func closestIntersectionToOrigin(firstWire: String, secondWire: String) throws -> Int? {
@@ -47,10 +84,17 @@ public struct Day3 {
     return manhattanDistance(p: closestPoint, q: origin)
   }
 
-
   func intersectingPoints(first: [Instruction], second: [Instruction], origin: Point) -> Set<Point> {
     Set(points(for: first, origin: origin))
       .intersection(Set(points(for: second, origin: origin)))
+  }
+
+  func numberOfPoints(points: [Point], untilReaching point: Point) -> Int? {
+    if let index = points.firstIndex(of: point) {
+      return index + 1
+    } else {
+      return nil
+    }
   }
 
   func points(for instructions: [Instruction], origin: Point) -> [Point] {

@@ -143,4 +143,50 @@ final class Day3Tests: XCTestCase {
       135
     )
   }
+
+  func testPointsUntilReaching() throws {
+    let instructions = try Day3().parseInstructions(string: "R8,U5,L5,D3")
+    let points = Day3().points(for: instructions, origin: .zero)
+    XCTAssertEqual(
+      Day3().numberOfPoints(points: points, untilReaching: .init(x: 8, y: 0)),
+      8
+    )
+    XCTAssertEqual(
+      Day3().numberOfPoints(points: points, untilReaching: .init(x: 8, y: 5)),
+      13
+    )
+    XCTAssertNil(
+      Day3().numberOfPoints(points: points, untilReaching: .init(x: 10, y: 10))
+    )
+    XCTAssertEqual(
+      Day3().numberOfPoints(points: points, untilReaching: .init(x: 3, y: 3)),
+      20
+    )
+  }
+
+  func testPointsUntilReaching2() throws {
+    let instructions = try Day3().parseInstructions(string: "U7,R6,D4,L4")
+    let points = Day3().points(for: instructions, origin: .zero)
+    XCTAssertEqual(
+      Day3().numberOfPoints(points: points, untilReaching: .init(x: 3, y: 3)),
+      20
+    )
+  }
+
+  func testLowestCostDistance() throws {
+    XCTAssertEqual(
+      try Day3().lowestCostIntersectionToOrigin(
+        firstWire: "R8,U5,L5,D3",
+        secondWire: "U7,R6,D4,L4"
+      ),
+      30
+    )
+    XCTAssertEqual(
+      try Day3().lowestCostIntersectionToOrigin(
+        firstWire: "R75,D30,R83,U83,L12,D49,R71,U7,L72",
+        secondWire: "U62,R66,U55,R34,D71,R55,D58,R83"
+      ),
+      610
+    )
+  }
 }

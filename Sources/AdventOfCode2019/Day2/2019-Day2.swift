@@ -12,7 +12,7 @@ public struct Day2 {
 
   public init() {}
 
-  func run1() throws -> Int {
+  func runPart1() throws -> Int {
     let string = try String(contentsOf: inputURL)
     var program = string
       .components(separatedBy: ",")
@@ -24,7 +24,7 @@ public struct Day2 {
     return result[0]
   }
 
-  func run2(desiredOutput: Int) throws -> Int {
+  func runPart2(desiredOutput: Int) throws -> Int {
     let string = try String(contentsOf: inputURL)
     var program = string
       .components(separatedBy: ",")

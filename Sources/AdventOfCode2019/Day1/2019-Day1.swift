@@ -23,7 +23,7 @@ public struct Day1 {
     return total
   }
 
-  func run1() throws -> Double {
+  func runPart1() throws -> Double {
     let input = try String(contentsOf: inputURL)
     return input
       .components(separatedBy: "\n")
@@ -32,7 +32,7 @@ public struct Day1 {
       .reduce(0, +)
   }
 
-  func run2() throws -> Double {
+  func runPart2() throws -> Double {
     let input = try String(contentsOf: inputURL)
     return input
       .components(separatedBy: "\n")

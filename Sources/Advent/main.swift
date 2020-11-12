@@ -8,4 +8,4 @@
 import Foundation
 import AdventOfCode2019
 
-try! AdventOfCode2019.Day3().run1()
+try! AdventOfCode2019.Day3().runPart2()

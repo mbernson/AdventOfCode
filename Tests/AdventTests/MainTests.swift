@@ -10,6 +10,7 @@ import XCTest
 
 class MainTests: XCTestCase {
   let executableName = "advent"
+  let expectedOutput = "Lowest costing intersection: 163676 steps\n"
 
   func testExample() throws {
     // Some of the APIs that we use below are available in macOS 10.13 and above.
@@ -31,7 +32,7 @@ class MainTests: XCTestCase {
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     let output = String(data: data, encoding: .utf8)
 
-    XCTAssertEqual(output, "Intersection distance: 8015\n")
+    XCTAssertEqual(output, expectedOutput)
   }
 
   /// Returns path to the built products directory.
