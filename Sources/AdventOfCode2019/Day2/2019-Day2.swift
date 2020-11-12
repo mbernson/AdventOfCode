@@ -8,7 +8,7 @@
 import Foundation
 
 struct Day2 {
-  public let inputURL: URL = Bundle.module.url(forResource: "input-day2", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "input-day2", withExtension: "txt")!
 
   func run1() throws -> Int {
     let string = try String(contentsOf: inputURL)

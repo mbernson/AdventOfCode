@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
+    # Swift package resources in tests are bugged in Xcode < 12.2 (See: https://forums.swift.org/t/swift-5-3-spm-resources-in-tests-uses-wrong-bundle-path/37051)
+    - name: Select Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_12.2.app
     - uses: actions/checkout@v2
     - name: Build
       run: swift build -v

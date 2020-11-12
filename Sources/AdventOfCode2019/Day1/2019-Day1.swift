@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Day1 {
-  public let inputURL: URL = Bundle.module.url(forResource: "input-day1", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "input-day1", withExtension: "txt")!
 
   func fuel(forMass mass: Double) -> Double {
     floor(mass / 3) - 2
