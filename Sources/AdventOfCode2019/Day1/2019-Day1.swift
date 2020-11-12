@@ -3,6 +3,8 @@ import Foundation
 public struct Day1 {
   public let inputURL = Bundle.module.url(forResource: "input-day1", withExtension: "txt")!
 
+  public init() {}
+
   func fuel(forMass mass: Double) -> Double {
     floor(mass / 3) - 2
   }

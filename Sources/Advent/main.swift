@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AdventOfCode2020
-//import ArgumentParser
+import AdventOfCode2019
 
-print("Hello world")
+try! AdventOfCode2019.Day3().run1()
