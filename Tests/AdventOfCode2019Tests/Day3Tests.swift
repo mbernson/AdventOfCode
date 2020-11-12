@@ -13,10 +13,10 @@ final class Day3Tests: XCTestCase {
   }
 
   func testManhattanDistance() throws {
-    XCTAssertEqual(Day3().manhattanDistance(p: .init(x: 0, y: 0), q: .init(x: 3, y: 3)), 6)
-    XCTAssertEqual(Day3().manhattanDistance(p: .init(x: 0, y: 0), q: .init(x: 1, y: 3)), 4)
-    XCTAssertEqual(Day3().manhattanDistance(p: .init(x: 2, y: 3), q: .init(x: 0, y: 0)), 5)
-    XCTAssertEqual(Day3().manhattanDistance(p: .init(x: 3, y: 2), q: .init(x: 0, y: 0)), 5)
+    XCTAssertEqual(Day3().manhattanDistance(from: .init(x: 0, y: 0), to: .init(x: 3, y: 3)), 6)
+    XCTAssertEqual(Day3().manhattanDistance(from: .init(x: 0, y: 0), to: .init(x: 1, y: 3)), 4)
+    XCTAssertEqual(Day3().manhattanDistance(from: .init(x: 2, y: 3), to: .init(x: 0, y: 0)), 5)
+    XCTAssertEqual(Day3().manhattanDistance(from: .init(x: 3, y: 2), to: .init(x: 0, y: 0)), 5)
   }
 
   func testPoints() throws {

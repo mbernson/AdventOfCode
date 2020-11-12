@@ -79,11 +79,11 @@ struct Day3 {
     var intersecting = intersectingPoints(first: firstWire, second: secondWire, origin: origin)
     intersecting.remove(origin)
     guard let closestPoint = intersecting.sorted(by: { a, b in
-      manhattanDistance(p: a, q: origin) < manhattanDistance(p: b, q: origin)
+      manhattanDistance(from: a, to: origin) < manhattanDistance(from: b, to: origin)
     }).first else {
       return nil
     }
-    return manhattanDistance(p: closestPoint, q: origin)
+    return manhattanDistance(from: closestPoint, to: origin)
   }
 
   func intersectingPoints(first: [Instruction], second: [Instruction], origin: Point) -> Set<Point> {
@@ -127,7 +127,7 @@ struct Day3 {
 
   /// Definition:
   /// For a plane with p1 at (x1, y1) and p2 at (x2, y2), the Manhattan distance is |x1 - x2| + |y1 - y2|.
-  func manhattanDistance(p: Point, q: Point) -> Int {
+  func manhattanDistance(from p: Point, to q: Point) -> Int {
     return abs(p.x - q.x) + abs(p.y - q.y)
   }
 }
