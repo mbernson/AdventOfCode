@@ -20,7 +20,7 @@ public struct Day2 {
     program[1] = 12
     program[2] = 2
     let machine = IntcodeMachine(program: program)
-    let result = machine.execute()
+    let result = try machine.execute()
     return result[0]
   }
 
@@ -35,7 +35,7 @@ public struct Day2 {
         program[1] = noun
         program[2] = verb
         let machine = IntcodeMachine(program: program)
-        let result = machine.execute()
+        let result = try machine.execute()
         let output = result[0]
         if output == desiredOutput {
           return noun * 100 + verb
