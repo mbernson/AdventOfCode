@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Day3 {
+public struct Day3Runner {
   public let inputURL = Bundle.module.url(forResource: "input-day3", withExtension: "txt")!
 
   public init() {}
@@ -15,7 +15,7 @@ public struct Day3 {
   public func runPart1() throws {
     let string = try String(contentsOf: inputURL)
     let parts = string.components(separatedBy: "\n")
-    if let d = try closestIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
+    if let d = try Day3().closestIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
       print(String(format: "Intersection distance: %d", d))
     } else {
       print("No intersections found!")
@@ -25,13 +25,17 @@ public struct Day3 {
   public func runPart2() throws {
     let string = try String(contentsOf: inputURL)
     let parts = string.components(separatedBy: "\n")
-    if let d = try lowestCostIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
+    if let d = try Day3().lowestCostIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
       print(String(format: "Lowest costing intersection: %d steps", d))
     } else {
       print("No intersections found!")
     }
   }
+}
 
+// MARK: Namespace for day 3 functions
+
+struct Day3 {
   func parseInstructions(string: String) throws -> [Instruction] {
     try string
       .components(separatedBy: ",")
@@ -44,8 +48,6 @@ public struct Day3 {
       secondWire: try parseInstructions(string: secondWire)
     )
   }
-
-  typealias IntersectionDistance = (distance: Int, point: Point)
 
   func lowestCostIntersectionToOrigin(firstWire: [Instruction], secondWire: [Instruction]) -> Int? {
     let origin = Point.zero
@@ -130,7 +132,10 @@ public struct Day3 {
   }
 }
 
+// MARK: Types
+
 extension Day3 {
+  typealias IntersectionDistance = (distance: Int, point: Point)
 
   struct Point: Equatable, Hashable {
     var x: Int
