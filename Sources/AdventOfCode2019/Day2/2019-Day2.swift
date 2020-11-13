@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Mathijs on 11/11/2020.
-//
-
 import Foundation
 
 public struct Day2 {
@@ -12,7 +5,7 @@ public struct Day2 {
 
   public init() {}
 
-  func runPart1() throws -> Int {
+  public func runPart1() throws -> Int {
     let string = try String(contentsOf: inputURL)
     var program = string
       .components(separatedBy: ",")
@@ -24,7 +17,7 @@ public struct Day2 {
     return result[0]
   }
 
-  func runPart2(desiredOutput: Int) throws -> Int {
+  public func runPart2(desiredOutput: Int) throws -> Int {
     let string = try String(contentsOf: inputURL)
     var program = string
       .components(separatedBy: ",")

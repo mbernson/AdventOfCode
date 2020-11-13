@@ -1,27 +1,29 @@
-//
-//  File.swift
-//  
-//
-//  Created by Mathijs on 11/11/2020.
-//
-
 import Foundation
 import XCTest
 
 class MainTests: XCTestCase {
   let executableName = "advent"
-  let expectedOutput = "Lowest costing intersection: 163676 steps\n"
 
-  func testExample() throws {
+  func testUnknownSubCommand() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["foobar"]), "Unrecognized subcommand 'foobar'\n")
+  }
+
+  func testDay3() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["day3-part1"]), "Intersection distance: 8015\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["day3-part2"]), "Lowest costing intersection: 163676 steps\n")
+  }
+
+  private func runAdventCommand(arguments: [String]? = nil) throws -> String? {
     // Some of the APIs that we use below are available in macOS 10.13 and above.
     guard #available(macOS 10.13, *) else {
-      return
+      throw XCTSkip("This test case requires macOS 10.13 or higher")
     }
 
     let fooBinary = productsDirectory.appendingPathComponent(executableName)
 
     let process = Process()
     process.executableURL = fooBinary
+    process.arguments = arguments
 
     let pipe = Pipe()
     process.standardOutput = pipe
@@ -32,11 +34,11 @@ class MainTests: XCTestCase {
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     let output = String(data: data, encoding: .utf8)
 
-    XCTAssertEqual(output, expectedOutput)
+    return output
   }
 
   /// Returns path to the built products directory.
-  var productsDirectory: URL {
+  private var productsDirectory: URL {
     #if os(macOS)
     for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
       return bundle.bundleURL.deletingLastPathComponent()

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Day5 {
+public struct Day4 {
   public func run() {
     //
   }
