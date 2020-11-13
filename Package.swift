@@ -24,6 +24,7 @@ let package = Package(
       .copy("Day1/input-day1.txt"),
       .copy("Day2/input-day2.txt"),
       .copy("Day3/input-day3.txt"),
+      .copy("Day5/input-day5.txt"),
     ]),
     .testTarget(name: "AdventOfCode2019Tests", dependencies: ["AdventOfCode2019"]),
 
