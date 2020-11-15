@@ -6,28 +6,24 @@ public struct Day4 {
   public init() {}
 
   public func runPart1() {
-    let passcodes = passcodesMatchingRequirements(inRange: inputRange)
+    let passcodes = inputRange
+      .filter(twoAdjacentDigitsAreTheSame)
+      .filter(digitsNeverDecrease)
     print("\(passcodes.count) passcodes match the requirements")
   }
 
   public func runPart2() {
-    let passcodes = passcodesMatchingRequirements(inRange: inputRange)
+    let passcodes = inputRange
+      .filter(digitsNeverDecrease)
       .filter(containsGroupOfTwoMatchingDigits)
     print("\(passcodes.count) passcodes match the requirements")
   }
 
-  public func passcodesMatchingRequirements(inRange range: ClosedRange<Int>) -> [Int] {
-    (0..<1_000_000) // Passcodes are six digits
-      .filter { range.contains($0) }
-      .filter(twoAdjacentDigitsAreTheSame)
-      .filter(digitsNeverDecrease)
-  }
-
   func twoAdjacentDigitsAreTheSame(_ number: Int) -> Bool {
     let digits = number.digits
-    return digits.enumerated().filter { (index, digit) in
+    return digits.enumerated().contains { (index, digit) in
       digits.indices.contains(index + 1) && digits[index + 1] == digit
-    }.count > 0
+    }
   }
 
   func containsGroupOfTwoMatchingDigits(_ number: Int) -> Bool {
