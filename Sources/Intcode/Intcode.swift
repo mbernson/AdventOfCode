@@ -22,37 +22,57 @@ public class IntcodeMachine {
   public func execute() throws -> [Int] {
     isRunning = true
 
+    // Main loop
     while isRunning {
-      let nextOpCode = memory[instructionPointer]
-      guard let nextOperation = Operation(rawValue: nextOpCode) else { throw IntcodeError.invalidOpcode(code: nextOpCode) }
-      switch nextOperation {
+      let instruction = try InstructionParser.parse(memory[instructionPointer])
+      let parameters = fetchParameters(instruction: instruction)
+
+      switch instruction.opCode {
       case .add:
-        performArityTwoOperation(+)
+        try performArityTwoOperation(+, parameters: parameters)
       case .multiply:
-        performArityTwoOperation(*)
+        try performArityTwoOperation(*, parameters: parameters)
       case .input:
-        guard let input = inputProvider.requestInput() else { throw IntcodeError.missingInput }
+        guard let input = inputProvider.requestInput() else {
+          throw IntcodeError.missingInput
+        }
         let inputAddress = memory[instructionPointer + 1]
         memory[inputAddress] = input
-        instructionPointer += 2
       case .output:
         let outputAddress = memory[instructionPointer + 1]
         outputProvider.output(value: memory[outputAddress])
-        instructionPointer += 2
       case .halt:
         isRunning = false
       }
+      // Advance instruction pointer
+      instructionPointer += instruction.opCode.arity + 1
     }
+    isRunning = false
     return memory
   }
 
-  private func performArityTwoOperation(_ block: (Int, Int) -> Int) {
-    let lhs_addr = memory[instructionPointer + 1]
-    let rhs_addr = memory[instructionPointer + 2]
+  private func performArityTwoOperation(_ block: (Int, Int) -> Int, parameters: [Int]) throws {
+    guard parameters.count == 3 else { throw IntcodeError.invalidNumberOfParameters }
     let result_addr = memory[instructionPointer + 3]
-    let lhs = memory[lhs_addr]
-    let rhs = memory[rhs_addr]
-    memory[result_addr] = block(lhs, rhs)
-    instructionPointer += 4
+    memory[result_addr] = block(parameters[0], parameters[1])
+  }
+
+  private func fetchParameters(instruction: Instruction) -> [Int] {
+    if instruction.opCode.arity == 0 {
+      return []
+    }
+    let start = instructionPointer + 1
+    let end = start + instruction.opCode.arity - 1
+    let sector = memory[start...end]
+    let parameters = zip(sector, instruction.parameterModes)
+      .map { int, mode -> Int in
+        switch mode {
+        case .immediate:
+          return int
+        case .position:
+          return memory[int]
+        }
+      }
+    return parameters
   }
 }
