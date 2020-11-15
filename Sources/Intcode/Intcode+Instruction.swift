@@ -11,16 +11,16 @@ public extension IntcodeMachine {
     public let parameterModes: [ParameterMode]
   }
 
-  struct Parameters {
-    let mode: ParameterMode
-    let value: Int
-  }
-
   struct InstructionParser {
     public static func parse(_ instruction: Int) throws -> Instruction {
       let rawOpCode = instruction % 100
       guard let opCode = OpCode(rawValue: rawOpCode) else {
         throw IntcodeError.invalidOpcode(code: rawOpCode)
+      }
+
+      // Early return
+      if instruction < 100 {
+        return Instruction(opCode: opCode, parameterModes: [.position, .position, .position])
       }
 
       let rawFirstParameterMode: Int = instruction / 100 % 10

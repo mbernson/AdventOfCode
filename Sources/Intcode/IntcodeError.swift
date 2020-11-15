@@ -6,6 +6,7 @@ public enum IntcodeError: Error, LocalizedError {
   case missingInput
   case featureNotImplemented
   case invalidNumberOfParameters
+  case invalidInstruction(String)
 
   public var errorDescription: String? {
     switch self {
@@ -19,6 +20,8 @@ public enum IntcodeError: Error, LocalizedError {
       return "Attempted to use a feature that is not yet implemented"
     case .invalidNumberOfParameters:
       return "Invalid number of paramters given for operation"
+    case let .invalidInstruction(string):
+      return "Encountered instruction value '\(string)' which is not a valid integer."
     }
   }
 }

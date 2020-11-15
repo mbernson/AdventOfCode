@@ -8,10 +8,7 @@ public struct Day5 {
 
   public func runPart1() throws {
     let string = try String(contentsOf: inputURL)
-    let program = string
-      .components(separatedBy: ",")
-      .compactMap(Int.init)
-    let machine = IntcodeMachine(program: program, inputProvider: Just([1]))
+    let machine = try IntcodeMachine(program: string, inputProvider: Just([1]))
     _ = try machine.execute()
   }
 }

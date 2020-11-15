@@ -14,19 +14,12 @@ guard let input = input, !input.isEmpty else {
   print("No input given"); exit(1)
 }
 
-let program = input
-  .components(separatedBy: ",")
-  .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-  .map { string -> Int in
-    guard let int = Int(string) else {
-      print("Encountered instruction value '\(string)' which is not a valid integer"); exit(1)
-    }
-    return int
-  }
-
-let machine = IntcodeMachine(program: program, inputProvider: InputProviderStdin(), outputProvider: OutputProviderStdout())
-
 do {
+  let machine = try IntcodeMachine(
+    program: input,
+    inputProvider: InputProviderStdin(),
+    outputProvider: OutputProviderStdout()
+  )
   let memory = try machine.execute()
   print("Program finished. Result memory:")
   print(memory)

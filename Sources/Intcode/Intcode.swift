@@ -54,7 +54,10 @@ public class IntcodeMachine {
   private func performArityTwoOperation(_ block: (Int, Int) -> Int, parameters: [Int]) throws {
     guard parameters.count == 3 else { throw IntcodeError.invalidNumberOfParameters }
     let result_addr = memory[instructionPointer + 3]
-    memory[result_addr] = block(parameters[0], parameters[1])
+    let lhs = parameters[0]
+    let rhs = parameters[1]
+    let result = block(lhs, rhs)
+    memory[result_addr] = result
   }
 
   private func fetchParameters(instruction: Instruction) -> [Int] {
@@ -62,9 +65,9 @@ public class IntcodeMachine {
       return []
     }
     let start = instructionPointer + 1
-    let end = start + instruction.opCode.arity - 1
-    let sector = memory[start...end]
-    let parameters = zip(sector, instruction.parameterModes)
+    let end = start + instruction.opCode.arity
+    let instructionMemory = memory[start..<end]
+    let parameters = zip(instructionMemory, instruction.parameterModes)
       .map { int, mode -> Int in
         switch mode {
         case .immediate:
@@ -74,5 +77,24 @@ public class IntcodeMachine {
         }
       }
     return parameters
+  }
+}
+
+extension IntcodeMachine {
+  public convenience init(
+    program: String,
+    inputProvider: InputProvider = EmptyInputProvider(),
+    outputProvider: OutputProvider = OutputProviderStdout()
+  ) throws {
+    let program = try program
+      .components(separatedBy: ",")
+      .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+      .map { string -> Int in
+        guard let int = Int(string) else {
+          throw IntcodeError.invalidInstruction(string)
+        }
+        return int
+      }
+    self.init(program: program, inputProvider: inputProvider, outputProvider: outputProvider)
   }
 }
