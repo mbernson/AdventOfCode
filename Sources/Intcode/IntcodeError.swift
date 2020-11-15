@@ -7,6 +7,7 @@ public enum IntcodeError: Error, LocalizedError {
   case featureNotImplemented
   case invalidNumberOfParameters
   case invalidInstruction(String)
+  case internalInconsistency
 
   public var errorDescription: String? {
     switch self {
@@ -22,6 +23,8 @@ public enum IntcodeError: Error, LocalizedError {
       return "Invalid number of paramters given for operation"
     case let .invalidInstruction(string):
       return "Encountered instruction value '\(string)' which is not a valid integer."
+    case .internalInconsistency:
+      return "An internal error occurred. This shouldn't happen."
     }
   }
 }
