@@ -39,8 +39,8 @@ public class IntcodeMachine {
         let inputAddress = memory[instructionPointer + 1]
         memory[inputAddress] = input
       case .output:
-        let outputAddress = memory[instructionPointer + 1]
-        outputProvider.output(value: memory[outputAddress])
+        let output = parameters[0]
+        outputProvider.output(value: output)
       case .halt:
         isRunning = false
       }
