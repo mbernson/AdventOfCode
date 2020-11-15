@@ -25,6 +25,7 @@ class MainTests: XCTestCase {
 
   func testDay4() throws {
     XCTAssertEqual(try runAdventCommand(arguments: ["day4-part1"]), "2150 passcodes match the requirements\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["day4-part2"]), "1462 passcodes match the requirements\n")
   }
 
   private func runAdventCommand(arguments: [String]? = nil) throws -> String? {

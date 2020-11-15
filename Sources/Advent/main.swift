@@ -27,6 +27,8 @@ case "day3-part2":
   try! AdventOfCode2019.Day3Runner().runPart2()
 case "day4-part1":
   AdventOfCode2019.Day4().runPart1()
+case "day4-part2":
+  AdventOfCode2019.Day4().runPart2()
 case let .some(subcommand):
   print("Unrecognized subcommand '\(subcommand)'"); exit(1)
 case .none:
