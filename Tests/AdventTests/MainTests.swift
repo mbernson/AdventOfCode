@@ -8,9 +8,23 @@ class MainTests: XCTestCase {
     XCTAssertEqual(try runAdventCommand(arguments: ["foobar"]), "Unrecognized subcommand 'foobar'\n")
   }
 
+  func testDay1() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["day1-part1"]), "3308377\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["day1-part2"]), "4959709\n")
+  }
+
+  func testDay2() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["day2-part1"]), "3765464\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["day2-part2"]), "7610\n")
+  }
+
   func testDay3() throws {
     XCTAssertEqual(try runAdventCommand(arguments: ["day3-part1"]), "Intersection distance: 8015\n")
     XCTAssertEqual(try runAdventCommand(arguments: ["day3-part2"]), "Lowest costing intersection: 163676 steps\n")
+  }
+
+  func testDay4() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["day4-part1"]), "2150 passcodes match the requirements\n")
   }
 
   private func runAdventCommand(arguments: [String]? = nil) throws -> String? {

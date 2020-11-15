@@ -1,7 +1,55 @@
 import Foundation
 
 public struct Day4 {
-  public func run() {
-    //
+  public init() {}
+
+  public func runPart1() {
+    let passcodes = passcodesMatchingRequirements(inRange: 124075...580769)
+    print("\(passcodes.count) passcodes match the requirements")
+  }
+
+  public func passcodesMatchingRequirements(inRange range: ClosedRange<Int>) -> [Int] {
+    (0..<1_000_000)
+      .filter { range.contains($0) }
+      .filter(twoAdjacentDigitsAreTheSame)
+      .filter(digitsNeverDecrease)
+  }
+
+  func twoAdjacentDigitsAreTheSame(_ number: Int) -> Bool {
+    let digits = number.digits
+    var result = false
+    for (index, digit) in digits.enumerated() {
+      if digits.indices.contains(index + 1) {
+        let next = digits[index + 1]
+        if digit == next {
+          result = true
+        }
+      }
+    }
+    return result
+  }
+
+  func digitsNeverDecrease(_ number: Int) -> Bool {
+    let digits = number.digits
+    guard var prev = digits.first else { return true }
+    for digit in digits {
+      if digit < prev {
+        return false
+      }
+      prev = digit
+    }
+    return true
+  }
+}
+
+extension Int {
+  var digits: [Int] {
+    var digits: [Int] = []
+    var num = self
+    repeat {
+      digits.append(num % 10)
+      num /= 10
+    } while num != 0
+    return digits.reversed()
   }
 }
