@@ -17,28 +17,21 @@ public struct Day4 {
 
   func twoAdjacentDigitsAreTheSame(_ number: Int) -> Bool {
     let digits = number.digits
-    var result = false
-    for (index, digit) in digits.enumerated() {
-      if digits.indices.contains(index + 1) {
-        let next = digits[index + 1]
-        if digit == next {
-          result = true
-        }
-      }
-    }
-    return result
+    return digits.enumerated().filter { (index, digit) in
+      digits.indices.contains(index + 1) && digits[index + 1] == digit
+    }.count > 0
   }
 
   func digitsNeverDecrease(_ number: Int) -> Bool {
     let digits = number.digits
-    guard var prev = digits.first else { return true }
-    for digit in digits {
-      if digit < prev {
-        return false
+    return digits.enumerated().allSatisfy { (index, digit) in
+      if digits.indices.contains(index + 1) {
+        let next = digits[index + 1]
+        return digit <= next
+      } else {
+        return true
       }
-      prev = digit
     }
-    return true
   }
 }
 
