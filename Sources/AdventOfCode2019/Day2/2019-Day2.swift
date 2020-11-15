@@ -1,4 +1,5 @@
 import Foundation
+import Intcode
 
 public struct Day2 {
   public let inputURL = Bundle.module.url(forResource: "input-day2", withExtension: "txt")!
@@ -13,8 +14,8 @@ public struct Day2 {
     program[1] = 12
     program[2] = 2
     let machine = IntcodeMachine(program: program)
-    let result = try machine.execute()
-    return result[0]
+    let memory = try machine.execute()
+    return memory[0]
   }
 
   public func runPart2(desiredOutput: Int) throws -> Int {
@@ -28,8 +29,8 @@ public struct Day2 {
         program[1] = noun
         program[2] = verb
         let machine = IntcodeMachine(program: program)
-        let result = try machine.execute()
-        let output = result[0]
+        let memory = try machine.execute()
+        let output = memory[0]
         if output == desiredOutput {
           return noun * 100 + verb
         }

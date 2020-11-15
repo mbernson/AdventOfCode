@@ -1,36 +1,30 @@
-//
-//  File.swift
-//  
-//
-//  Created by Mathijs on 11/11/2020.
-//
-
 import Foundation
 
 public class IntcodeMachine {
   private(set) var memory: [Int]
-
   private var instructionPointer: Int = 0
   private var isRunning: Bool = false
-  public var inputProvider: IntcodeInputProvider
-  public var outputProvider: IntcodeOutputProvider
+
+  public var inputProvider: InputProvider
+  public var outputProvider: OutputProvider
 
   public init(
     program: [Int],
-    inputProvider: IntcodeInputProvider = EmptyInputProvider(),
-    outputProvider: IntcodeOutputProvider = IntcodeOutputPrinter()
+    inputProvider: InputProvider = EmptyInputProvider(),
+    outputProvider: OutputProvider = OutputProviderStdout()
   ) {
     self.memory = program
     self.inputProvider = inputProvider
     self.outputProvider = outputProvider
   }
 
+  /// Runs the machine's given intcode program and returns the machine's memory tape after it has finished running.
   public func execute() throws -> [Int] {
     isRunning = true
 
     while isRunning {
       let nextOpCode = memory[instructionPointer]
-      guard let nextOperation = Operation(rawValue: nextOpCode) else { throw IntcodeError.invalidOpcode(nextOpCode) }
+      guard let nextOperation = Operation(rawValue: nextOpCode) else { throw IntcodeError.invalidOpcode(code: nextOpCode) }
       switch nextOperation {
       case .add:
         performArityTwoOperation(+)
@@ -60,29 +54,5 @@ public class IntcodeMachine {
     let rhs = memory[rhs_addr]
     memory[result_addr] = block(lhs, rhs)
     instructionPointer += 4
-  }
-}
-
-public extension IntcodeMachine {
-  enum Operation: Int {
-    case add = 1
-    case multiply = 2
-    case input = 3
-    case output = 4
-    case halt = 99
-  }
-}
-
-public enum IntcodeError: Error, LocalizedError {
-  case invalidOpcode(Int)
-  case missingInput
-
-  public var errorDescription: String? {
-    switch self {
-    case let .invalidOpcode(code):
-      return String(format: "Invalid opcode encountered: %d", code)
-    case .missingInput:
-      return "The Intcode program requested some input from the provider, but none was provided to it."
-    }
   }
 }
