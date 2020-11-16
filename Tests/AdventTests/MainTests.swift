@@ -28,6 +28,11 @@ class MainTests: XCTestCase {
     XCTAssertEqual(try runAdventCommand(arguments: ["day4-part2"]), "1462 passcodes match the requirements\n")
   }
 
+  func testDay5() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["day5-part1"]), "Output: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 14155342\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["day5-part2"]), "Output: 8684145\n")
+  }
+
   private func runAdventCommand(arguments: [String]? = nil) throws -> String? {
     // Some of the APIs that we use below are available in macOS 10.13 and above.
     guard #available(macOS 10.13, *) else {
