@@ -17,15 +17,23 @@ Most of the solutions were written using test-driven development (TDD), so there
 
 To run the tests:
 
-1. In the top left dropdowns, select "AdventOfCode-Package" and "My Mac".
-1. Press command-U to run all tests.
+```
+swift build
+swift test
+```
 
 ### Running code for a specific problem
 
-There is a CLI program that can be used to run some code outside of unit tests.
+There is a CLI runner for the puzzle solutions.
 
-To use it:
+To run a solution:
 
-1. Edit the file `Sources/Advent/main.swift` to call into whatever code you want it to. Solutions for the AOC problems are contained within the `AdventOfCode2019` and `AdventOfCode2020` Swift modules.
-1. In the top left dropdowns, select "advent" and "My Mac".
-1. Press play or command-R to run.
+```
+swift run advent day1-part1
+swift run advent day1-part2
+swift run advent day2-part1
+swift run advent day2-part2
+swift run advent day3-part1
+swift run advent day3-part2
+# You get the idea
+```
