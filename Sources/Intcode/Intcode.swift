@@ -80,7 +80,6 @@ public class IntcodeMachine {
   }
 
   private func performArityTwoOperation(_ block: (Int, Int) -> Int, parameters: [Int]) throws {
-    guard parameters.count == 3 else { throw IntcodeError.invalidNumberOfParameters }
     let result_addr = memory[instructionPointer + 3]
     let lhs = parameters[0]
     let rhs = parameters[1]
@@ -89,6 +88,9 @@ public class IntcodeMachine {
   }
 
   private func fetchParameters(instruction: Instruction) throws -> [Int] {
+    guard instruction.parameterModes[2] == .position else {
+      throw IntcodeError.invalidUsage(message: "The third parameter mode should always be in position mode")
+    }
     if instruction.opCode.arity == 0 {
       return []
     }

@@ -4,10 +4,9 @@ public enum IntcodeError: Error, LocalizedError {
   case invalidOpcode(code: Int)
   case invalidParameterMode(mode: Int)
   case missingInput
-  case featureNotImplemented
-  case invalidNumberOfParameters
   case invalidInstruction(String)
   case internalInconsistency
+  case invalidUsage(message: String)
 
   public var errorDescription: String? {
     switch self {
@@ -17,14 +16,12 @@ public enum IntcodeError: Error, LocalizedError {
       return String(format: "Unknown parameter encountered: %d", mode)
     case .missingInput:
       return "The Intcode program requested some input from the provider, but none was provided to it."
-    case .featureNotImplemented:
-      return "Attempted to use a feature that is not yet implemented"
-    case .invalidNumberOfParameters:
-      return "Invalid number of paramters given for operation"
     case let .invalidInstruction(string):
       return "Encountered instruction value '\(string)' which is not a valid integer."
     case .internalInconsistency:
       return "An internal error occurred. This shouldn't happen."
+    case let .invalidUsage(message):
+      return message
     }
   }
 }
