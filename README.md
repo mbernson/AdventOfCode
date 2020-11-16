@@ -37,3 +37,12 @@ swift run advent day3-part1
 swift run advent day3-part2
 # You get the idea
 ```
+
+## Running an intcode interpreter
+
+```
+swift run intcodecli
+Please enter an intcode program > 3,0,4,0,99
+Please enter input > 42
+Output: 42
+```
