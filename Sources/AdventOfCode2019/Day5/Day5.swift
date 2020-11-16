@@ -2,7 +2,7 @@ import Foundation
 import Intcode
 
 public struct Day5 {
-  public let inputURL = Bundle.module.url(forResource: "input-day5", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "day5", withExtension: "txt")!
 
   public init() {}
 
