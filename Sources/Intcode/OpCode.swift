@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Mathijs on 15/11/2020.
-//
-
 import Foundation
 
 public extension IntcodeMachine {
@@ -19,7 +12,7 @@ public extension IntcodeMachine {
     case equals = 8
     case halt = 99
 
-    /// The number of arguments/operands the operation takes.
+    /// The total number of arguments/operands the operation takes, both input and output.
     var arity: Int {
       switch self {
       case .add, .multiply, .lessThan, .equals:
