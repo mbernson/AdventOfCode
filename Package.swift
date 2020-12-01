@@ -37,7 +37,9 @@ let package = Package(
     .target(name: "IntcodeCli", dependencies: ["Intcode"]),
 
     // 2020 solutions
-    .target(name: "AdventOfCode2020"),
+    .target(name: "AdventOfCode2020", resources: [
+      .copy("Day1/day1.txt"),
+    ]),
     .testTarget(name: "AdventOfCode2020Tests", dependencies: ["AdventOfCode2020"]),
 
     // Solution runner
