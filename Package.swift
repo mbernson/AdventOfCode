@@ -22,7 +22,7 @@ let package = Package(
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.
     // Targets can depend on other targets in this package, and on products in packages this package depends on.
 
-    // 2019
+    // 2019 solutions
     .target(name: "AdventOfCode2019", dependencies: ["Intcode"], resources: [
       .copy("Day1/day1.txt"),
       .copy("Day2/day2.txt"),
@@ -31,16 +31,16 @@ let package = Package(
     ]),
     .testTarget(name: "AdventOfCode2019Tests", dependencies: ["AdventOfCode2019"]),
 
-    // Intcode
+    // Intcode library & cli
     .target(name: "Intcode"),
     .testTarget(name: "IntcodeTests", dependencies: ["Intcode"]),
     .target(name: "IntcodeCli", dependencies: ["Intcode"]),
 
-    // 2020
+    // 2020 solutions
     .target(name: "AdventOfCode2020"),
     .testTarget(name: "AdventOfCode2020Tests", dependencies: ["AdventOfCode2020"]),
 
-    // Runner
+    // Solution runner
     .target(name: "Advent", dependencies: [
       "AdventOfCode2019",
       "AdventOfCode2020",
