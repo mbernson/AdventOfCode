@@ -1,6 +1,6 @@
 # AdventOfCode
 
-My Advent Of Code (AOC) solutions, written in Swift.
+This repository contains my Advent Of Code (AOC) solutions, written in Swift.
 
 ## How to use the code
 
