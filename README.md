@@ -29,12 +29,12 @@ There is a CLI runner for the puzzle solutions.
 To run a solution:
 
 ```
-swift run advent day1-part1
-swift run advent day1-part2
-swift run advent day2-part1
-swift run advent day2-part2
-swift run advent day3-part1
-swift run advent day3-part2
+swift run advent 2019 day1 part1
+swift run advent 2019 day1 part2
+swift run advent 2019 day2 part1
+swift run advent 2019 day2 part2
+swift run advent 2020 day1 part1
+swift run advent 2020 day1 part2
 # You get the idea
 ```
 
