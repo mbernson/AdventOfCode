@@ -12,7 +12,8 @@ final class Day1Tests: XCTestCase {
       675,
       1456,
     ]
-    XCTAssertEqual(Day1().findMultiples(addingUpTo: 2020, in: input), [1721, 299])
+    XCTAssertEqual(Day1().findTwoMultiples(addingUpTo: 2020, in: input), [1721, 299])
+    XCTAssertEqual(Day1().findThreeMultiples(addingUpTo: 2020, in: input), [979, 366, 675])
   }
 
 }
