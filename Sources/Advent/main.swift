@@ -37,6 +37,9 @@ case ["2020", "day1", "part2"]:
 case ["2020", "day2", "part1"]:
   let answer = try! AdventOfCode2020.Day2().runPart1()
   print(String(format: "%d", answer))
+case ["2020", "day2", "part2"]:
+  let answer = try! AdventOfCode2020.Day2().runPart2()
+  print(String(format: "%d", answer))
 
 case []:
   print("No subcommand given"); exit(1)
