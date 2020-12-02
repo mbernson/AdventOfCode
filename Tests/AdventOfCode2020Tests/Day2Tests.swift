@@ -42,8 +42,8 @@ final class Day2Tests: XCTestCase {
   }
 
   func testValidPasswordRules2Invalid() throws {
-    let rule = Day2.PasswordRule(character: "b", occurrences: 1...3)
-    XCTAssertFalse(rule.testPart2(password: "cdefg"))
+    let rule1 = Day2.PasswordRule(character: "b", occurrences: 1...3)
+    XCTAssertFalse(rule1.testPart2(password: "cdefg"))
     let rule2 = Day2.PasswordRule(character: "c", occurrences: 2...9)
     XCTAssertFalse(rule2.testPart2(password: "ccccccccc"))
   }
