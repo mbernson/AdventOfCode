@@ -27,6 +27,8 @@ case ["2019", "day5", "part1"]:
   try! AdventOfCode2019.Day5().runPart1()
 case ["2019", "day5", "part2"]:
   try! AdventOfCode2019.Day5().runPart2()
+case ["2019", "day6", "part1"]:
+  try! AdventOfCode2019.Day6().runPart1()
 
 case ["2020", "day1", "part1"]:
   let answer = try! AdventOfCode2020.Day1().runPart1()
