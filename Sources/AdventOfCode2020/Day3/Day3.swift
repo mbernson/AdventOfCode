@@ -39,17 +39,17 @@ public struct Day3 {
 
   public func runPart1() throws -> Int {
     let grid = parseInput(input: try String(contentsOf: inputURL))
-    return numberOfTreesHit(grid: grid)
+    return numberOfTreesHit(grid: grid, movement: Position(x: 3, y: 1))
   }
 
-  func numberOfTreesHit(grid: [[Point]]) -> Int {
+  func numberOfTreesHit(grid: [[Point]], movement: Position) -> Int {
     var position = Position.zero
     var numberOfTreesHit = 0
     while position.y < (grid.count - 1) {
-      // Move 3 to the right
-      position.x += 3
-      // Move 1 down
-      position.y += 1
+      // Move to the right
+      position.x += movement.x
+      // Move down
+      position.y += movement.y
       // Get object at current position
       let row = grid[position.y]
       let object = row[position.x % row.count]
@@ -62,6 +62,16 @@ public struct Day3 {
   }
 
   public func runPart2() throws -> Int {
-    return 0
+    let movements: [Position] = [
+      Position(x: 1, y: 1),
+      Position(x: 3, y: 1),
+      Position(x: 5, y: 1),
+      Position(x: 7, y: 1),
+      Position(x: 1, y: 2),
+    ]
+    let grid = parseInput(input: try String(contentsOf: inputURL))
+    return movements
+      .map { numberOfTreesHit(grid: grid, movement: $0) }
+      .reduce(1, *)
   }
 }

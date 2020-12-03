@@ -20,6 +20,12 @@ final class Day3Tests: XCTestCase {
     for row in grid {
       XCTAssertEqual(row.count, 11)
     }
-    XCTAssertEqual(Day3().numberOfTreesHit(grid: grid), 7)
+    XCTAssertEqual(grid.count, 11)
+
+    XCTAssertEqual(Day3().numberOfTreesHit(grid: grid, movement: .init(x: 1, y: 1)), 2)
+    XCTAssertEqual(Day3().numberOfTreesHit(grid: grid, movement: .init(x: 3, y: 1)), 7)
+    XCTAssertEqual(Day3().numberOfTreesHit(grid: grid, movement: .init(x: 5, y: 1)), 3)
+    XCTAssertEqual(Day3().numberOfTreesHit(grid: grid, movement: .init(x: 7, y: 1)), 4)
+    XCTAssertEqual(Day3().numberOfTreesHit(grid: grid, movement: .init(x: 1, y: 2)), 2)
   }
 }

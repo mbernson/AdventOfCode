@@ -7,14 +7,14 @@ let commands = CommandLine.arguments.dropFirst()
 switch commands {
 case ["2019", "day1", "part1"]:
   let answer = try! AdventOfCode2019.Day1().runPart1()
-  print(String(format: "%d", Int(answer)))
+  print(Int(answer))
 case ["2019", "day1", "part2"]:
   let answer = try! AdventOfCode2019.Day1().runPart2()
-  print(String(format: "%d", Int(answer)))
+  print(Int(answer))
 case ["2019", "day2", "part1"]:
-  print(String(format: "%d", try! AdventOfCode2019.Day2().runPart1()))
+  print(try! AdventOfCode2019.Day2().runPart1())
 case ["2019", "day2", "part2"]:
-  print(String(format: "%d", try! AdventOfCode2019.Day2().runPart2(desiredOutput: 19_690_720)))
+  print(try! AdventOfCode2019.Day2().runPart2(desiredOutput: 19_690_720))
 case ["2019", "day3", "part1"]:
   try! AdventOfCode2019.Day3Runner().runPart1()
 case ["2019", "day3", "part2"]:
@@ -30,19 +30,22 @@ case ["2019", "day5", "part2"]:
 
 case ["2020", "day1", "part1"]:
   let answer = try! AdventOfCode2020.Day1().runPart1()
-  print(String(format: "%d", answer))
+  print(answer)
 case ["2020", "day1", "part2"]:
   let answer = try! AdventOfCode2020.Day1().runPart2()
-  print(String(format: "%d", answer))
+  print(answer)
 case ["2020", "day2", "part1"]:
   let answer = try! AdventOfCode2020.Day2().runPart1()
-  print(String(format: "%d", answer))
+  print(answer)
 case ["2020", "day2", "part2"]:
   let answer = try! AdventOfCode2020.Day2().runPart2()
-  print(String(format: "%d", answer))
+  print(answer)
 case ["2020", "day3", "part1"]:
   let answer = try! AdventOfCode2020.Day3().runPart1()
-  print(String(format: "%d", answer))
+  print(answer)
+case ["2020", "day3", "part2"]:
+  let answer = try! AdventOfCode2020.Day3().runPart2()
+  print(answer)
 
 case []:
   print("No subcommand given"); exit(1)
