@@ -10,7 +10,7 @@ public class OutputProviderStdout: OutputProvider {
   public init() {}
 
   public func output(value: Int) {
-    print(String(format: "Output: %d", value))
+    print("Output: \(value)")
   }
 }
 

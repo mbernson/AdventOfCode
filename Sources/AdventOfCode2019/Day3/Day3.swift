@@ -9,7 +9,7 @@ public struct Day3Runner {
     let string = try String(contentsOf: inputURL)
     let parts = string.components(separatedBy: "\n")
     if let d = try Day3().closestIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
-      print(String(format: "Intersection distance: %d", d))
+      print("Intersection distance: \(d)")
     } else {
       print("No intersections found!")
     }
@@ -19,7 +19,7 @@ public struct Day3Runner {
     let string = try String(contentsOf: inputURL)
     let parts = string.components(separatedBy: "\n")
     if let d = try Day3().lowestCostIntersectionToOrigin(firstWire: parts[0], secondWire: parts[1]) {
-      print(String(format: "Lowest costing intersection: %d steps", d))
+      print("Lowest costing intersection: \(d) steps")
     } else {
       print("No intersections found!")
     }

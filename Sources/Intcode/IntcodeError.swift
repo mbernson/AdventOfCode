@@ -11,9 +11,9 @@ public enum IntcodeError: Error, LocalizedError {
   public var errorDescription: String? {
     switch self {
     case let .invalidOpcode(code):
-      return String(format: "Unknown opcode encountered: %d", code)
+      return "Unknown opcode encountered: \(code)"
     case let .invalidParameterMode(mode):
-      return String(format: "Unknown parameter encountered: %d", mode)
+      return "Unknown parameter encountered: \(mode)"
     case .missingInput:
       return "The Intcode program requested some input from the provider, but none was provided to it."
     case let .invalidInstruction(string):
