@@ -11,7 +11,7 @@ public struct Day4 {
   }
 
   public func runPart2() throws -> Int {
-    let validPassports = parseAndValidatePassports(in: try String(contentsOf: inputURL))
+    let validPassports = parsePassports(in: try String(contentsOf: inputURL))
     return validPassports.count
   }
 
@@ -23,16 +23,16 @@ public struct Day4 {
       }
   }
   
-  func parseAndValidatePassports(in input: String) -> [Passport] {
+  func parsePassports(in input: String) -> [Passport] {
     return input
       .components(separatedBy: "\n\n")
       .compactMap { line in
-        try? parseAndValidatePassport(in: line)
+        try? parsePassport(in: line)
       }
   }
 
   func parseRawPassport(in input: String) throws -> RawPassport {
-    let fields = parseFields(in: input)
+    let fields = parsePassportFields(in: input)
     guard let byr = fields["byr"] else { throw PassportParsingError.missingField(name: "byr") }
     guard let iyr = fields["iyr"] else { throw PassportParsingError.missingField(name: "iyr") }
     guard let eyr = fields["eyr"] else { throw PassportParsingError.missingField(name: "eyr") }
@@ -41,16 +41,7 @@ public struct Day4 {
     guard let ecl = fields["ecl"] else { throw PassportParsingError.missingField(name: "ecl") }
     guard let pid = fields["pid"] else { throw PassportParsingError.missingField(name: "pid") }
     let cid = fields["cid"]
-    return RawPassport(
-      byr: byr,
-      iyr: iyr,
-      eyr: eyr,
-      hgt: hgt,
-      hcl: hcl,
-      ecl: ecl,
-      pid: pid,
-      cid: cid
-    )
+    return RawPassport(byr: byr, iyr: iyr, eyr: eyr, hgt: hgt, hcl: hcl, ecl: ecl, pid: pid, cid: cid)
   }
 
   private let validPassportNumberDigits = Set(0...9)
@@ -58,58 +49,60 @@ public struct Day4 {
   private let validIyrearRange = 2010...2020
   private let validEyrYearRange = 2020...2030
 
-  func parseAndValidatePassport(in input: String) throws -> Passport {
-    let fields = parseFields(in: input)
-    guard let _byr = fields["byr"] else { throw PassportParsingError.missingField(name: "byr") }
-    guard let _iyr = fields["iyr"] else { throw PassportParsingError.missingField(name: "iyr") }
-    guard let _eyr = fields["eyr"] else { throw PassportParsingError.missingField(name: "eyr") }
-    guard let _hgt = fields["hgt"] else { throw PassportParsingError.missingField(name: "hgt") }
-    guard var _hcl = fields["hcl"] else { throw PassportParsingError.missingField(name: "hcl") }
-    guard let _ecl = fields["ecl"] else { throw PassportParsingError.missingField(name: "ecl") }
-    guard let pid = fields["pid"] else { throw PassportParsingError.missingField(name: "pid") }
+  func parsePassport(in input: String) throws -> Passport {
+    let fields = parsePassportFields(in: input)
+    guard let byr = fields["byr"] else { throw PassportParsingError.missingField(name: "byr") }
+    guard let iyr = fields["iyr"] else { throw PassportParsingError.missingField(name: "iyr") }
+    guard let eyr = fields["eyr"] else { throw PassportParsingError.missingField(name: "eyr") }
+    guard let hgt = fields["hgt"] else { throw PassportParsingError.missingField(name: "hgt") }
+    guard var hcl = fields["hcl"] else { throw PassportParsingError.missingField(name: "hcl") }
+    guard let ecl = fields["ecl"] else { throw PassportParsingError.missingField(name: "ecl") }
+    guard let passportId = fields["pid"] else { throw PassportParsingError.missingField(name: "pid") }
 
     // Validate birth/issued/expiry years
-    guard let byr = Int(_byr), validByrYearRange.contains(byr) else { throw PassportParsingError.invalidBirthYear }
-    guard let iyr = Int(_iyr), validIyrearRange.contains(iyr) else { throw PassportParsingError.invalidIssuedYear }
-    guard let eyr = Int(_eyr), validEyrYearRange.contains(eyr) else { throw PassportParsingError.invalidExpiryYear }
+    guard let birthYear = Int(byr), validByrYearRange.contains(birthYear) else { throw PassportParsingError.invalidBirthYear }
+    guard let issueYear = Int(iyr), validIyrearRange.contains(issueYear) else { throw PassportParsingError.invalidIssuedYear }
+    guard let expirationYear = Int(eyr), validEyrYearRange.contains(expirationYear) else { throw PassportParsingError.invalidExpiryYear }
 
     // Validate height
-    let hgt = try parseHeight(_hgt)
-    switch hgt.unit {
+    let height = try parseHeight(hgt)
+    switch height.unit {
     case .cm:
-      guard (150...193).contains(hgt.value) else { throw PassportParsingError.invalidHeight }
+      guard (150...193).contains(height.value)
+        else { throw PassportParsingError.invalidHeight }
     case .in:
-      guard (59...76).contains(hgt.value) else { throw PassportParsingError.invalidHeight }
+      guard (59...76).contains(height.value)
+        else { throw PassportParsingError.invalidHeight }
     }
 
     // Validate hair color
-    guard _hcl.starts(with: "#") else { throw PassportParsingError.invalidHaircolor }
-    _hcl.removeFirst()
-    guard let hcl = Int(_hcl, radix: 16) else { throw PassportParsingError.invalidHaircolor }
+    guard hcl.starts(with: "#") else { throw PassportParsingError.invalidHaircolor }
+    hcl.removeFirst()
+    guard let hairColor = Int(hcl, radix: 16) else { throw PassportParsingError.invalidHaircolor }
 
     // Validate eye color
-    guard let ecl = EyeColor(rawValue: _ecl) else { throw PassportParsingError.invalidEyeColor(color: _ecl) }
+    guard let eyeColor = EyeColor(rawValue: ecl) else { throw PassportParsingError.invalidEyeColor(color: ecl) }
 
     // Validate passport number
-    let passportNumberDigits: [Int] = pid.map(String.init).compactMap(Int.init)
-    guard passportNumberDigits.count == 9,
-          passportNumberDigits.filter({ validPassportNumberDigits.contains($0) }).count == 9
-    else { throw PassportParsingError.invalidPassportNumber }
+    let passportIdDigits: [Int] = passportId.map(String.init).compactMap(Int.init)
+    guard passportIdDigits.count == 9,
+          passportIdDigits.filter({ validPassportNumberDigits.contains($0) }).count == 9
+      else { throw PassportParsingError.invalidPassportNumber }
 
-    let cid = fields["cid"]
+    let countryId = fields["cid"]
     return Passport(
-      byr: byr,
-      iyr: iyr,
-      eyr: eyr,
-      hgt: hgt,
-      hcl: hcl,
-      ecl: ecl,
-      pid: pid,
-      cid: cid
+      birthYear: birthYear,
+      issueYear: issueYear,
+      expirationYear: expirationYear,
+      height: height,
+      hairColor: hairColor,
+      eyeColor: eyeColor,
+      passportId: passportId,
+      countryId: countryId
     )
   }
 
-  func parseFields(in input: String) -> [String : String] {
+  func parsePassportFields(in input: String) -> [String : String] {
     var fields: [String : String] = [:]
     input.replacingOccurrences(of: "\n", with: " ")
       .split(separator: " ")
@@ -159,22 +152,14 @@ public struct Day4 {
 
   /// Fully validated passport type
   struct Passport: Equatable {
-    /// Birth Year
-    let byr: Int
-    /// Issue Year
-    let iyr: Int
-    /// Expiration Year
-    let eyr: Int
-    /// Height
-    let hgt: Height
-    /// Hair Color
-    let hcl: Int
-    /// Eye Color
-    let ecl: EyeColor
-    /// Passport ID
-    let pid: String
-    /// Country ID (optional)
-    let cid: String?
+    let birthYear: Int
+    let issueYear: Int
+    let expirationYear: Int
+    let height: Height
+    let hairColor: Int
+    let eyeColor: EyeColor
+    let passportId: String
+    let countryId: String?
   }
 
   enum EyeColor: String {
