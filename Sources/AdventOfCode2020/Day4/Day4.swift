@@ -22,14 +22,6 @@ public struct Day4 {
         try? parseRawPassport(in: line)
       }
   }
-  
-  func parsePassports(in input: String) -> [Passport] {
-    return input
-      .components(separatedBy: "\n\n")
-      .compactMap { line in
-        try? parsePassport(in: line)
-      }
-  }
 
   func parseRawPassport(in input: String) throws -> RawPassport {
     let fields = parsePassportFields(in: input)
@@ -44,11 +36,23 @@ public struct Day4 {
     return RawPassport(byr: byr, iyr: iyr, eyr: eyr, hgt: hgt, hcl: hcl, ecl: ecl, pid: pid, cid: cid)
   }
 
-  private let validPassportNumberDigits = Set(0...9)
-  private let validByrYearRange = 1920...2002
-  private let validIyrearRange = 2010...2020
-  private let validEyrYearRange = 2020...2030
 
+  func parsePassports(in input: String) -> [Passport] {
+    return input
+      .components(separatedBy: "\n\n")
+      .compactMap { line in
+        try? parsePassport(in: line)
+      }
+  }
+
+  private let validPassportNumberDigits = Set(0...9)
+  private let validBirthYearRange = 1920...2002
+  private let validIssueYearRange = 2010...2020
+  private let validExpirationYearRange = 2020...2030
+  private let validLengthCentimeterRange = 150...193
+  private let validLengthInchRange = 59...76
+
+  /// Parse a single passport into a fully validated Passport object, or throw an error
   func parsePassport(in input: String) throws -> Passport {
     let fields = parsePassportFields(in: input)
     guard let byr = fields["byr"] else { throw PassportParsingError.missingField(name: "byr") }
@@ -60,18 +64,18 @@ public struct Day4 {
     guard let passportId = fields["pid"] else { throw PassportParsingError.missingField(name: "pid") }
 
     // Validate birth/issued/expiry years
-    guard let birthYear = Int(byr), validByrYearRange.contains(birthYear) else { throw PassportParsingError.invalidBirthYear }
-    guard let issueYear = Int(iyr), validIyrearRange.contains(issueYear) else { throw PassportParsingError.invalidIssuedYear }
-    guard let expirationYear = Int(eyr), validEyrYearRange.contains(expirationYear) else { throw PassportParsingError.invalidExpiryYear }
+    guard let birthYear = Int(byr), validBirthYearRange.contains(birthYear) else { throw PassportParsingError.invalidBirthYear }
+    guard let issueYear = Int(iyr), validIssueYearRange.contains(issueYear) else { throw PassportParsingError.invalidIssuedYear }
+    guard let expirationYear = Int(eyr), validExpirationYearRange.contains(expirationYear) else { throw PassportParsingError.invalidExpiryYear }
 
     // Validate height
     let height = try parseHeight(hgt)
     switch height.unit {
     case .cm:
-      guard (150...193).contains(height.value)
+      guard validLengthCentimeterRange.contains(height.value)
         else { throw PassportParsingError.invalidHeight }
     case .in:
-      guard (59...76).contains(height.value)
+      guard validLengthInchRange.contains(height.value)
         else { throw PassportParsingError.invalidHeight }
     }
 
@@ -90,6 +94,7 @@ public struct Day4 {
       else { throw PassportParsingError.invalidPassportNumber }
 
     let countryId = fields["cid"]
+
     return Passport(
       birthYear: birthYear,
       issueYear: issueYear,
@@ -102,6 +107,7 @@ public struct Day4 {
     )
   }
 
+  /// Parse the fields from single passport into a dictionary
   func parsePassportFields(in input: String) -> [String : String] {
     var fields: [String : String] = [:]
     input.replacingOccurrences(of: "\n", with: " ")
@@ -116,6 +122,7 @@ public struct Day4 {
     return fields
   }
 
+  /// Parse the height value from a passport into a properly validated structure
   func parseHeight(_ string: String) throws -> Height {
     let range = NSRange(location: 0, length: string.utf16.count)
     let regex = try NSRegularExpression(pattern: "(\\d+)(\\w+)", options: .caseInsensitive)
