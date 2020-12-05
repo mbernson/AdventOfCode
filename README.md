@@ -1,5 +1,7 @@
 # AdventOfCode
 
+[![Build status](https://github.com/mbernson/AdventOfCode/workflows/Tests/badge.svg)](https://github.com/mbernson/AdventOfCode/actions)
+
 This repository contains my Advent Of Code (AOC) solutions, written in Swift.
 
 ## How to use the code
