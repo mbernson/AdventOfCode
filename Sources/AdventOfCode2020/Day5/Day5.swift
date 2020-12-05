@@ -58,7 +58,7 @@ public struct Day5 {
   }
 
   func calculateRow(seats: [Seat]) -> Int {
-    let input: [BinaryHalf] = seats.compactMap { seat in
+    return binaryPartition(input: seats.compactMap { seat in
       switch seat {
       // F means to take the lower half
       case .front: return .lower
@@ -66,13 +66,11 @@ public struct Day5 {
       case .back: return .upper
       default: return nil
       }
-    }
-    assert(input.count == 7)
-    return calculate(input: input, min: 0, max: 127)
+    })
   }
 
   func calculateColumn(seats: [Seat]) -> Int {
-    let input: [BinaryHalf] = seats.compactMap { seat in
+    return binaryPartition(input: seats.compactMap { seat in
       switch seat {
       // L means to take the lower half
       case .left: return .lower
@@ -80,34 +78,25 @@ public struct Day5 {
       case .right: return .upper
       default: return nil
       }
-    }
-    assert(input.count == 3)
-    return calculate(input: input, min: 0, max: 7)
+    })
   }
 
-  private func calculate(input: [BinaryHalf], min _min: Int, max _max: Int) -> Int {
-    var range = _min..._max
+  private func binaryPartition(input: [BinaryHalf]) -> Int {
+    let max: Int = Int(pow(2, Double(input.count))) - 1 // Why does it have to be like this, Swift
+    var range = 0...max
 
     for current in input {
       switch current {
       case .upper:
-        range = upperHalf(range: range)
+        let newLowerBound = (range.upperBound + range.lowerBound + 1) / 2
+        range = newLowerBound...range.upperBound
       case .lower:
-        range = lowerHalf(range: range)
+        let newUpperBound = (range.upperBound + range.lowerBound) / 2
+        range = range.lowerBound...newUpperBound
       }
     }
 
     return input.last! == .upper ? range.upperBound : range.lowerBound
-  }
-
-  func lowerHalf(range: ClosedRange<Int>) -> ClosedRange<Int> {
-    let newUpper = (range.upperBound + range.lowerBound) / 2
-    return range.lowerBound...newUpper
-  }
-
-  func upperHalf(range: ClosedRange<Int>) -> ClosedRange<Int> {
-    let newLower = (range.upperBound + range.lowerBound + 1) / 2
-    return newLower...range.upperBound
   }
 
   enum Seat: String {

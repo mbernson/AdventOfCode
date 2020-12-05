@@ -2,19 +2,6 @@
 import XCTest
 
 final class Day5Tests: XCTestCase {
-  func testLowerHalf() throws {
-    XCTAssertEqual(Day5().lowerHalf(range: 0...127), 0...63)
-    XCTAssertEqual(Day5().lowerHalf(range: 32...63), 32...47)
-    XCTAssertEqual(Day5().lowerHalf(range: 44...47), 44...45)
-  }
-
-  func testUpperHalf() throws {
-    XCTAssertEqual(Day5().upperHalf(range: 0...127), 64...127)
-    XCTAssertEqual(Day5().upperHalf(range: 0...63), 32...63)
-    XCTAssertEqual(Day5().upperHalf(range: 32...47), 40...47)
-    XCTAssertEqual(Day5().upperHalf(range: 40...47), 44...47)
-  }
-
   func testCalculateRow() throws {
     let input: [Day5.Seat] = "FBFBBFF".map(String.init)
       .compactMap(Day5.Seat.init(rawValue:))
