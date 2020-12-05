@@ -15,6 +15,29 @@ public struct Day5 {
       })
   }
 
+  public func runPart2() throws -> Int {
+    let seatNumbers = try String(contentsOf: inputURL)
+      .components(separatedBy: "\n")
+      .filter { !$0.isEmpty }
+      .map(calculateSeat(string:))
+      .map(\.seatID)
+      .sorted()
+
+    for (index, seatNumber) in seatNumbers.enumerated() {
+      let nextIndex = index + 1
+      let nextExpectedSeatNumber = seatNumber + 1
+      if seatNumbers.indices.contains(nextIndex), seatNumbers[nextIndex] != nextExpectedSeatNumber {
+        return nextExpectedSeatNumber
+      }
+    }
+
+    throw Day5Error.noAnswerFound
+  }
+
+  enum Day5Error: Error {
+    case noAnswerFound
+  }
+
   struct CalculatedSeat: Equatable {
     let row: Int
     let column: Int
