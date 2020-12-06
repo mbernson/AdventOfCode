@@ -8,25 +8,21 @@ public struct Day6 {
   public func runPart1() throws -> Int {
     let inputString = try String(contentsOf: inputURL)
     let groups = makeGroups(string: inputString)
-    return countAnswersAnyoneYes(in: groups)
+    return countAnswersAnyAnsweredYes(in: groups)
   }
 
   public func runPart2() throws -> Int {
     let inputString = try String(contentsOf: inputURL)
     let groups = makeGroups(string: inputString)
-    return countAnswersEveryoneYes(in: groups)
+    return countAnswersAllAnsweredYes(in: groups)
   }
 
-  func countAnswersAnyoneYes(in groups: [Group]) -> Int {
-    return groups.reduce(0, { total, group in
-      return total + group.combinedAnswers.filter({ _, v in v == true}).count
-    })
+  func countAnswersAnyAnsweredYes(in groups: [Group]) -> Int {
+    return groups.map(\.questionsWhereAnyAnsweredYes).map(\.count).reduce(0, +)
   }
 
-  func countAnswersEveryoneYes(in groups: [Group]) -> Int {
-    return groups.reduce(0, { total, group in
-      return total + group.allAnsweredYes.count
-    })
+  func countAnswersAllAnsweredYes(in groups: [Group]) -> Int {
+    return groups.map(\.questionsWhereAllAnsweredYes).map(\.count).reduce(0, +)
   }
 
   func makeGroups(string: String) -> [Group] {
@@ -45,40 +41,28 @@ public struct Day6 {
   }
 
   func makePerson(line: String) -> Person {
-    var answers = [String : Bool]()
-    line.map(String.init)
-      .forEach {
-        if !answers.keys.contains($0) {
-          answers[$0] = true
-        }
-      }
-    return Person(answers: answers)
+    return Person(answers: Set(line.map(String.init)))
   }
 
   struct Group: Equatable {
     let people: [Person]
 
-    var combinedAnswers: [String: Bool] {
-      return people.reduce([:], { acc, person in
-        return acc.merging(person.answers, uniquingKeysWith: { a, b in a })
+    var questionsWhereAnyAnsweredYes: Set<String> {
+      return people.reduce(Set(), { acc, person in
+        return acc.union(person.answers)
       })
     }
 
-    var allAnsweredYes: Set<String> {
-      let answers: Set<String> = Set(people.reduce([String](), { acc, person in
-        return acc + person.answers.keys
-      }))
-      var allYes = Set<String>()
-      for answer in answers {
-        if people.allSatisfy({ $0.answers[answer] == true }) {
-          allYes.insert(answer)
+    var questionsWhereAllAnsweredYes: Set<String> {
+      return questionsWhereAnyAnsweredYes.filter { answer in
+        people.allSatisfy { person in
+          person.answers.contains(answer)
         }
       }
-      return allYes
     }
   }
 
   struct Person: Equatable {
-    let answers: [String : Bool]
+    let answers: Set<String>
   }
 }

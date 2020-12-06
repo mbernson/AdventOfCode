@@ -6,9 +6,9 @@ final class Day6Tests: XCTestCase {
     let input = "abcx\nabcy\nabcz\n"
     let group = Day6().makeGroup(string: input)
     XCTAssertEqual(group, Day6.Group(people: [
-      Day6.Person(answers: ["a": true, "b": true, "c": true, "x": true]),
-      Day6.Person(answers: ["a": true, "b": true, "c": true, "y": true]),
-      Day6.Person(answers: ["a": true, "b": true, "c": true, "z": true]),
+      Day6.Person(answers: ["a", "b", "c", "x"]),
+      Day6.Person(answers: ["a", "b", "c", "y"]),
+      Day6.Person(answers: ["a", "b", "c", "z"]),
     ]))
   }
 
@@ -17,25 +17,25 @@ final class Day6Tests: XCTestCase {
     let groups = Day6().makeGroups(string: input)
     XCTAssertEqual(groups, [
       Day6.Group(people: [
-        Day6.Person(answers: ["a": true, "b": true, "c": true]),
+        Day6.Person(answers: ["a", "b", "c"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["a": true]),
-        Day6.Person(answers: ["b": true]),
-        Day6.Person(answers: ["c": true]),
+        Day6.Person(answers: ["a"]),
+        Day6.Person(answers: ["b"]),
+        Day6.Person(answers: ["c"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["a": true, "b": true]),
-        Day6.Person(answers: ["a": true, "c": true]),
+        Day6.Person(answers: ["a", "b"]),
+        Day6.Person(answers: ["a", "c"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["a": true]),
-        Day6.Person(answers: ["a": true]),
-        Day6.Person(answers: ["a": true]),
-        Day6.Person(answers: ["a": true]),
+        Day6.Person(answers: ["a"]),
+        Day6.Person(answers: ["a"]),
+        Day6.Person(answers: ["a"]),
+        Day6.Person(answers: ["a"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["b": true]),
+        Day6.Person(answers: ["b"]),
       ]),
     ])
   }
@@ -43,17 +43,17 @@ final class Day6Tests: XCTestCase {
   func testCountAnswersAnyoneYes() throws {
     let input = "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb"
     let groups = Day6().makeGroups(string: input)
-    XCTAssertEqual(Day6().countAnswersAnyoneYes(in: groups), 11)
+    XCTAssertEqual(Day6().countAnswersAnyAnsweredYes(in: groups), 11)
   }
 
   func testCountAnswersEveryoneYes() throws {
     let input = "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb"
     let groups = Day6().makeGroups(string: input)
-    XCTAssertEqual(groups[0].allAnsweredYes, Set(["a", "b", "c"]))
-    XCTAssertEqual(groups[1].allAnsweredYes, Set())
-    XCTAssertEqual(groups[2].allAnsweredYes, Set(["a"]))
-    XCTAssertEqual(groups[3].allAnsweredYes, Set(["a"]))
-    XCTAssertEqual(groups[4].allAnsweredYes, Set(["b"]))
-    XCTAssertEqual(Day6().countAnswersEveryoneYes(in: groups), 6)
+    XCTAssertEqual(groups[0].questionsWhereAllAnsweredYes, ["a", "b", "c"])
+    XCTAssertEqual(groups[1].questionsWhereAllAnsweredYes, [])
+    XCTAssertEqual(groups[2].questionsWhereAllAnsweredYes, ["a"])
+    XCTAssertEqual(groups[3].questionsWhereAllAnsweredYes, ["a"])
+    XCTAssertEqual(groups[4].questionsWhereAllAnsweredYes, ["b"])
+    XCTAssertEqual(Day6().countAnswersAllAnsweredYes(in: groups), 6)
   }
 }
