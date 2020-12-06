@@ -6,9 +6,9 @@ final class Day6Tests: XCTestCase {
     let input = "abcx\nabcy\nabcz\n"
     let group = Day6().makeGroup(string: input)
     XCTAssertEqual(group, Day6.Group(people: [
-      Day6.Person(answers: ["a", "b", "c", "x"]),
-      Day6.Person(answers: ["a", "b", "c", "y"]),
-      Day6.Person(answers: ["a", "b", "c", "z"]),
+      Day6.Person(questionsAnsweredYes: ["a", "b", "c", "x"]),
+      Day6.Person(questionsAnsweredYes: ["a", "b", "c", "y"]),
+      Day6.Person(questionsAnsweredYes: ["a", "b", "c", "z"]),
     ]))
   }
 
@@ -17,25 +17,25 @@ final class Day6Tests: XCTestCase {
     let groups = Day6().makeGroups(string: input)
     XCTAssertEqual(groups, [
       Day6.Group(people: [
-        Day6.Person(answers: ["a", "b", "c"]),
+        Day6.Person(questionsAnsweredYes: ["a", "b", "c"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["a"]),
-        Day6.Person(answers: ["b"]),
-        Day6.Person(answers: ["c"]),
+        Day6.Person(questionsAnsweredYes: ["a"]),
+        Day6.Person(questionsAnsweredYes: ["b"]),
+        Day6.Person(questionsAnsweredYes: ["c"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["a", "b"]),
-        Day6.Person(answers: ["a", "c"]),
+        Day6.Person(questionsAnsweredYes: ["a", "b"]),
+        Day6.Person(questionsAnsweredYes: ["a", "c"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["a"]),
-        Day6.Person(answers: ["a"]),
-        Day6.Person(answers: ["a"]),
-        Day6.Person(answers: ["a"]),
+        Day6.Person(questionsAnsweredYes: ["a"]),
+        Day6.Person(questionsAnsweredYes: ["a"]),
+        Day6.Person(questionsAnsweredYes: ["a"]),
+        Day6.Person(questionsAnsweredYes: ["a"]),
       ]),
       Day6.Group(people: [
-        Day6.Person(answers: ["b"]),
+        Day6.Person(questionsAnsweredYes: ["b"]),
       ]),
     ])
   }

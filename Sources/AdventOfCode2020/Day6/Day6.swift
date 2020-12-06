@@ -18,11 +18,13 @@ public struct Day6 {
   }
 
   func countAnswersAnyAnsweredYes(in groups: [Group]) -> Int {
-    return groups.map(\.questionsWhereAnyAnsweredYes).map(\.count).reduce(0, +)
+    return groups.map(\.questionsWhereAnyAnsweredYes)
+      .map(\.count).reduce(0, +)
   }
 
   func countAnswersAllAnsweredYes(in groups: [Group]) -> Int {
-    return groups.map(\.questionsWhereAllAnsweredYes).map(\.count).reduce(0, +)
+    return groups.map(\.questionsWhereAllAnsweredYes)
+      .map(\.count).reduce(0, +)
   }
 
   func makeGroups(string: String) -> [Group] {
@@ -41,7 +43,7 @@ public struct Day6 {
   }
 
   func makePerson(line: String) -> Person {
-    return Person(answers: Set(line.map(String.init)))
+    return Person(questionsAnsweredYes: Set(line.map(String.init)))
   }
 
   struct Group: Equatable {
@@ -49,20 +51,20 @@ public struct Day6 {
 
     var questionsWhereAnyAnsweredYes: Set<String> {
       return people.reduce(Set(), { acc, person in
-        return acc.union(person.answers)
+        return acc.union(person.questionsAnsweredYes)
       })
     }
 
     var questionsWhereAllAnsweredYes: Set<String> {
       return questionsWhereAnyAnsweredYes.filter { answer in
         people.allSatisfy { person in
-          person.answers.contains(answer)
+          person.questionsAnsweredYes.contains(answer)
         }
       }
     }
   }
 
   struct Person: Equatable {
-    let answers: Set<String>
+    let questionsAnsweredYes: Set<String>
   }
 }
