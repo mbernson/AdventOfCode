@@ -38,6 +38,22 @@ final class Day6Tests: XCTestCase {
         Day6.Person(answers: ["b": true]),
       ]),
     ])
-    XCTAssertEqual(Day6().countAnswers(in: groups), 11)
+  }
+
+  func testCountAnswersAnyoneYes() throws {
+    let input = "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb"
+    let groups = Day6().makeGroups(string: input)
+    XCTAssertEqual(Day6().countAnswersAnyoneYes(in: groups), 11)
+  }
+
+  func testCountAnswersEveryoneYes() throws {
+    let input = "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb"
+    let groups = Day6().makeGroups(string: input)
+    XCTAssertEqual(groups[0].allAnsweredYes, Set(["a", "b", "c"]))
+    XCTAssertEqual(groups[1].allAnsweredYes, Set())
+    XCTAssertEqual(groups[2].allAnsweredYes, Set(["a"]))
+    XCTAssertEqual(groups[3].allAnsweredYes, Set(["a"]))
+    XCTAssertEqual(groups[4].allAnsweredYes, Set(["b"]))
+    XCTAssertEqual(Day6().countAnswersEveryoneYes(in: groups), 6)
   }
 }

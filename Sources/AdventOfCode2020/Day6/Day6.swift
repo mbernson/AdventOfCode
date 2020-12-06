@@ -8,16 +8,24 @@ public struct Day6 {
   public func runPart1() throws -> Int {
     let inputString = try String(contentsOf: inputURL)
     let groups = makeGroups(string: inputString)
-    return countAnswers(in: groups)
+    return countAnswersAnyoneYes(in: groups)
   }
 
   public func runPart2() throws -> Int {
-    return 0
+    let inputString = try String(contentsOf: inputURL)
+    let groups = makeGroups(string: inputString)
+    return countAnswersEveryoneYes(in: groups)
   }
 
-  func countAnswers(in groups: [Group]) -> Int {
+  func countAnswersAnyoneYes(in groups: [Group]) -> Int {
     return groups.reduce(0, { total, group in
       return total + group.combinedAnswers.filter({ _, v in v == true}).count
+    })
+  }
+
+  func countAnswersEveryoneYes(in groups: [Group]) -> Int {
+    return groups.reduce(0, { total, group in
+      return total + group.allAnsweredYes.count
     })
   }
 
@@ -54,6 +62,19 @@ public struct Day6 {
       return people.reduce([:], { acc, person in
         return acc.merging(person.answers, uniquingKeysWith: { a, b in a })
       })
+    }
+
+    var allAnsweredYes: Set<String> {
+      let answers: Set<String> = Set(people.reduce([String](), { acc, person in
+        return acc + person.answers.keys
+      }))
+      var allYes = Set<String>()
+      for answer in answers {
+        if people.allSatisfy({ $0.answers[answer] == true }) {
+          allYes.insert(answer)
+        }
+      }
+      return allYes
     }
   }
 
