@@ -60,6 +60,11 @@ class MainTests: XCTestCase {
     XCTAssertEqual(try runAdventCommand(arguments: ["2020", "day5", "part2"]), "557\n")
   }
 
+  func test2020Day6() throws {
+    XCTAssertEqual(try runAdventCommand(arguments: ["2020", "day6", "part1"]), "7128\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["2020", "day6", "part2"]), "3640\n")
+  }
+
   // MARK: Helpers
 
   private func runAdventCommand(arguments: [String]? = nil) throws -> String? {
