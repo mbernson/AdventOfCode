@@ -36,6 +36,26 @@ public struct Day10 {
 
   public func runPart2() throws -> Int {
     let input = try parseInput()
-    return 0
+    return arrangements(for: input)
+  }
+
+  func arrangements(for _input: [Int]) -> Int {
+    var input = _input
+    input.sort()
+    input.insert(0, at: 0)
+    input.append(input.max()! + 3)
+
+    var seen = [Int: Int]()
+    seen[0] = 1
+
+    for adapter in input {
+      let permissibleRange = (adapter + 1)...(adapter + 3)
+      let reachable = input.filter { permissibleRange.contains($0) }
+      for candidate in reachable {
+        let add = seen[adapter] ?? 0
+        seen[candidate] = (seen[candidate] ?? 0) + add
+      }
+    }
+    return seen[input.max()!]!
   }
 }

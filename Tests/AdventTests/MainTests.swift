@@ -80,6 +80,7 @@ class MainTests: XCTestCase {
 
   func test2020Day10() throws {
     XCTAssertEqual(try runAdventCommand(arguments: ["2020", "day10", "part1"]), "2590\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["2020", "day10", "part2"]), "226775649501184\n")
   }
 
   // MARK: Helpers
