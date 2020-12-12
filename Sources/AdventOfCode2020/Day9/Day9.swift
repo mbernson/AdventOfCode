@@ -20,9 +20,8 @@ public struct Day9 {
     return n
   }
 
-  public func runPart2() throws -> Int {
+  public func runPart2(invalidNumber: Int) throws -> Int {
     let numbers = try parseInput()
-    let invalidNumber: Int = 1930745883
     guard let result = contiguousSetAddingUpTo(result: invalidNumber, in: numbers)?.sorted(),
           let first = result.first, let last = result.last
     else {
