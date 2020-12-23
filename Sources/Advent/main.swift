@@ -68,6 +68,10 @@ case ["2020", "day10", "part1"]:
   print(try! AdventOfCode2020.Day10().runPart1())
 case ["2020", "day10", "part2"]:
   print(try! AdventOfCode2020.Day10().runPart2())
+case ["2020", "day12", "part1"]:
+  print(try! AdventOfCode2020.Day12().runPart1())
+case ["2020", "day12", "part2"]:
+  print(try! AdventOfCode2020.Day12().runPart2())
 
 case []:
   print("No subcommand given"); exit(1)
