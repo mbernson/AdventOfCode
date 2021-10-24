@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -34,7 +34,7 @@ let package = Package(
     // Intcode library & cli
     .target(name: "Intcode"),
     .testTarget(name: "IntcodeTests", dependencies: ["Intcode"]),
-    .target(name: "IntcodeCli", dependencies: ["Intcode"]),
+    .executableTarget(name: "IntcodeCli", dependencies: ["Intcode"]),
 
     // 2020 solutions
     .target(name: "AdventOfCode2020", resources: [
@@ -53,7 +53,7 @@ let package = Package(
     .testTarget(name: "AdventOfCode2020Tests", dependencies: ["AdventOfCode2020"]),
 
     // Solution runner
-    .target(name: "Advent", dependencies: [
+    .executableTarget(name: "Advent", dependencies: [
       "AdventOfCode2019",
       "AdventOfCode2020",
     ]),
