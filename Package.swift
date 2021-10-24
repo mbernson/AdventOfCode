@@ -9,7 +9,8 @@ let package = Package(
     // Products define the executables and libraries a package produces, and make them visible to other packages.
     .library(name: "AdventOfCode2019", targets: ["AdventOfCode2019"]),
     .library(name: "AdventOfCode2020", targets: ["AdventOfCode2020"]),
-    .executable(name: "advent", targets: ["Advent"]),
+    .executable(name: "advent2019", targets: ["Advent2019"]),
+    .executable(name: "advent2020", targets: ["Advent2020"]),
 
     .library(name: "Intcode", targets: ["Intcode"]),
     .executable(name: "intcodecli", targets: ["IntcodeCli"]),
@@ -52,11 +53,10 @@ let package = Package(
     ]),
     .testTarget(name: "AdventOfCode2020Tests", dependencies: ["AdventOfCode2020"]),
 
-    // Solution runner
-    .executableTarget(name: "Advent", dependencies: [
-      "AdventOfCode2019",
-      "AdventOfCode2020",
-    ]),
-    .testTarget(name: "AdventTests", dependencies: ["Advent"]),
+    // Solution runners
+    .executableTarget(name: "Advent2019", dependencies: ["AdventOfCode2019"]),
+    .testTarget(name: "Advent2019Tests", dependencies: ["Advent2019"]),
+    .executableTarget(name: "Advent2020", dependencies: ["AdventOfCode2020"]),
+    .testTarget(name: "Advent2020Tests", dependencies: ["Advent2020"]),
   ]
 )

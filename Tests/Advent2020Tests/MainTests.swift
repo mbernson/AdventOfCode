@@ -2,37 +2,12 @@ import Foundation
 import XCTest
 
 class MainTests: XCTestCase {
-  let executableName = "advent"
+  let executableName = "advent2020"
 
   func testUnknownSubCommand() throws {
     XCTAssertEqual(try runAdventCommand(arguments: []), "No subcommand given\n")
     XCTAssertEqual(try runAdventCommand(arguments: ["foobar"]), "Unrecognized subcommand 'foobar'\n")
     XCTAssertEqual(try runAdventCommand(arguments: ["foo", "bar"]), "Unrecognized subcommand 'foo bar'\n")
-  }
-
-  func test2019Day1() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day1", "part1"]), "3308377\n")
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day1", "part2"]), "4959709\n")
-  }
-
-  func test2019Day2() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day2", "part1"]), "3765464\n")
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day2", "part2"]), "7610\n")
-  }
-
-  func test2019Day3() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day3", "part1"]), "Intersection distance: 8015\n")
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day3", "part2"]), "Lowest costing intersection: 163676 steps\n")
-  }
-
-  func test2019Day4() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day4", "part1"]), "2150 passcodes match the requirements\n")
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day4", "part2"]), "1462 passcodes match the requirements\n")
-  }
-
-  func test2019Day5() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day5", "part1"]), "Output: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 0\nOutput: 14155342\n")
-    XCTAssertEqual(try runAdventCommand(arguments: ["2019", "day5", "part2"]), "Output: 8684145\n")
   }
 
   func test2020Day1() throws {
