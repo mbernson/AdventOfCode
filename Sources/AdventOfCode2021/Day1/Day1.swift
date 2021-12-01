@@ -10,10 +10,10 @@ public struct Day1 {
     let input: [Int] = inputString
       .components(separatedBy: "\n")
       .compactMap(Int.init)
-    return numbersThatIncrease(array: input)
+    return numbersThatIncrease(input)
   }
   
-  func numbersThatIncrease(array: [Int]) -> Int {
+  func numbersThatIncrease(_ array: [Int]) -> Int {
     var numbers = array
     var prev = numbers.removeFirst()
     var result = 0
@@ -25,8 +25,30 @@ public struct Day1 {
     }
     return result
   }
+  
+  func numbersThatIncrease(_ array: [Int], window: Int) -> Int {
+    let windowed: [Int] = windowedSums(array, window: window)
+    return numbersThatIncrease(windowed)
+  }
+  
+  func windowedSums(_ numbers: [Int], window: Int) -> [Int] {
+    var result: [Int] = []
+    for (startIndex, _) in numbers.enumerated() {
+      let endIndex = startIndex + window
+      if endIndex > numbers.endIndex {
+        break
+      }
+      let range = numbers[startIndex..<endIndex]
+      result.append(range.reduce(0, +))
+    }
+    return result
+  }
 
   public func runPart2() throws -> Int {
-    return 42 * 2
+    let inputString = try String(contentsOf: inputURL)
+    let input: [Int] = inputString
+      .components(separatedBy: "\n")
+      .compactMap(Int.init)
+    return numbersThatIncrease(input, window: 3)
   }
 }
