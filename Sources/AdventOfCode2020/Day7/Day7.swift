@@ -6,33 +6,64 @@ public struct Day7 {
   public init() {}
 
   public func runPart1() throws -> Int {
-//    let inputString = try String(contentsOf: inputURL)
-    let inputString = "light red bags contain 1 bright white bag, 2 muted yellow bags.\ndark orange bags contain 3 bright white bags, 4 muted yellow bags.\nbright white bags contain 1 shiny gold bag.\nmuted yellow bags contain 2 shiny gold bags, 9 faded blue bags.\nshiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.\ndark olive bags contain 3 faded blue bags, 4 dotted black bags.\nvibrant plum bags contain 5 faded blue bags, 6 dotted black bags.\nfaded blue bags contain no other bags.\ndotted black bags contain no other bags."
+    let inputString = try String(contentsOf: inputURL)
     let bags = inputString.components(separatedBy: "\n")
       .filter({ !$0.isEmpty })
-      .compactMap(makeBag)
-    print(bags)
-    return 0
+      .compactMap(parseLine)
+    let matches = bagsThatMayContain(bagName: "shiny gold", in: bags)
+    return matches.count
   }
 
   public func runPart2() throws -> Int {
     return 0
   }
 
-  func makeBag(from string: String) -> Bag? {
-    print(string)
-    let parts = string.split(separator: " ")
-    let parentName = parts[0...1].joined(separator: " ")
+  let noOtherBagsRegex = try! NSRegularExpression(pattern: #"^([\w\s]+) bags contain no other bags.$"#, options: [])
+  let bagsRegex = try! NSRegularExpression(pattern: #"^([\w\s]+) bags contain ([\w\s,]+).$"#, options: [])
 
-    if string.contains("no other bags.") {
-      return Bag(name: parentName, children: [])
+  func parseLine(_ line: String) -> Bag? {
+    let fullRange = NSRange(location: 0, length: line.utf16.count)
+
+    if let match = noOtherBagsRegex.firstMatch(in: line, options: [], range: fullRange) {
+      let bagNameRange = match.range(at: 1)
+      let bagName = String(line[Range(bagNameRange, in: line)!])
+      return Bag(name: bagName, contains: [])
+    } else if let match = bagsRegex.firstMatch(in: line, options: [], range: fullRange) {
+      let bagNameRange = match.range(at: 1)
+      let bagName = String(line[Range(bagNameRange, in: line)!])
+      let contentsRange = match.range(at: 2)
+      let contents = String(line[Range(contentsRange, in: line)!])
+      return Bag(name: bagName, contains: parseContents(contents))
     } else {
       return nil
     }
   }
 
-  struct Bag {
+  private func parseContents(_ line: String) -> [String] {
+    let parts = line.split(separator: ",").map(String.init)
+    return parts.flatMap(parseContent)
+  }
+
+  private func parseContent(_ part: String) -> [String] {
+    let xs = part.split(separator: " ")
+    let amount = Int(String(xs[0]))!
+    let bagName: String = xs[1...2].joined(separator: " ")
+    return Array(repeating: bagName, count: amount)
+  }
+
+  func bagsThatMayContain(bagName: String, in bags: [Bag]) -> Set<String> {
+    var results = Set<String>()
+    for bag in bags {
+      if bag.contains.contains(bagName) {
+        results.insert(bag.name)
+      } else {
+      }
+    }
+    return results
+  }
+
+  struct Bag: Equatable {
     let name: String
-    let children: [Bag]
+    let contains: [String]
   }
 }
