@@ -27,13 +27,13 @@ public struct Day7 {
     if let match = noOtherBagsRegex.firstMatch(in: line, options: [], range: fullRange) {
       let bagNameRange = match.range(at: 1)
       let bagName = String(line[Range(bagNameRange, in: line)!])
-      return Bag(name: bagName, contains: [])
+      return Bag(name: bagName, contents: [])
     } else if let match = bagsRegex.firstMatch(in: line, options: [], range: fullRange) {
       let bagNameRange = match.range(at: 1)
       let bagName = String(line[Range(bagNameRange, in: line)!])
       let contentsRange = match.range(at: 2)
       let contents = String(line[Range(contentsRange, in: line)!])
-      return Bag(name: bagName, contains: parseContents(contents))
+      return Bag(name: bagName, contents: parseContents(contents))
     } else {
       return nil
     }
@@ -54,9 +54,13 @@ public struct Day7 {
   func bagsThatMayContain(bagName: String, in bags: [Bag]) -> Set<String> {
     var results = Set<String>()
     for bag in bags {
-      if bag.contains.contains(bagName) {
+      if bag.contents.contains(bagName) {
         results.insert(bag.name)
-      } else {
+      }
+    }
+    for bag in results {
+      if !results.contains(bagName) {
+        results = results.union(bagsThatMayContain(bagName: bag, in: bags))
       }
     }
     return results
@@ -64,6 +68,6 @@ public struct Day7 {
 
   struct Bag: Equatable {
     let name: String
-    let contains: [String]
+    let contents: [String]
   }
 }
