@@ -12,36 +12,29 @@ public struct Day1 {
       .compactMap(Int.init)
     return numbersThatIncrease(input)
   }
-  
+
   func numbersThatIncrease(_ array: [Int]) -> Int {
-    var numbers = array
-    var prev = numbers.removeFirst()
-    var result = 0
-    for number in numbers {
-      if number > prev {
-        result += 1
+    (array.startIndex..<(array.endIndex - 1))
+      .map { startIndex in
+        let endIndex = startIndex + 1
+        let current = array[startIndex]
+        let next = array[endIndex]
+        return next > current
       }
-      prev = number
-    }
-    return result
+      .filter { $0 == true }
+      .count
   }
-  
+
   func numbersThatIncrease(_ array: [Int], window: Int) -> Int {
     let windowed: [Int] = windowedSums(array, window: window)
     return numbersThatIncrease(windowed)
   }
-  
+
   func windowedSums(_ numbers: [Int], window: Int) -> [Int] {
-    var result: [Int] = []
-    for (startIndex, _) in numbers.enumerated() {
+    (numbers.startIndex...(numbers.endIndex - window)).map { startIndex in
       let endIndex = startIndex + window
-      if endIndex > numbers.endIndex {
-        break
-      }
-      let range = numbers[startIndex..<endIndex]
-      result.append(range.reduce(0, +))
+      return numbers[startIndex..<endIndex].reduce(0, +)
     }
-    return result
   }
 
   public func runPart2() throws -> Int {
