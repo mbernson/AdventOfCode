@@ -70,6 +70,7 @@ let package = Package(
 
     // 2021 solutions
     .target(name: "AdventOfCode2021", resources: [
+      .copy("Day1/day1.txt"),
     ]),
     .testTarget(name: "AdventOfCode2021Tests", dependencies: ["AdventOfCode2021"]),
 

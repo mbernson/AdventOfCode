@@ -4,7 +4,7 @@ import class Foundation.Bundle
 final class MainTests: XCTestCase {
 
   func test2021Day1() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["day1", "part1"]), "42\n")
+    XCTAssertEqual(try runAdventCommand(arguments: ["day1", "part1"]), "1228\n")
   }
 
   func test2021Day2() throws {
