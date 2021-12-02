@@ -30,7 +30,13 @@ final class Day2Tests: XCTestCase {
     XCTAssertEqual(try Day2().runPart1(), 1938402)
   }
 
+  func testCourseUpdated() throws {
+    let (horizontalPos, depth) = try Day2().calculateCourseUpdated(input: input)
+    XCTAssertEqual(horizontalPos, 15)
+    XCTAssertEqual(depth, 60)
+  }
+
   func testPart2() throws {
-    XCTAssertEqual(try Day2().runPart2(), 2)
+    XCTAssertEqual(try Day2().runPart2(), 1947878632)
   }
 }

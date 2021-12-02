@@ -46,6 +46,28 @@ public struct Day2 {
     return (horizontalPos, depth)
   }
 
+  func calculateCourseUpdated(input: [String]) throws -> (horizontalPos: Int, depth: Int) {
+    let lines = try input.map(parseLine)
+
+    var horizontalPos = 0
+    var depth = 0
+    var aim = 0
+
+    for line in lines {
+      switch line.direction {
+      case .forward:
+        horizontalPos += line.amount
+        depth += aim * line.amount
+      case .up:
+        aim -= line.amount
+      case .down:
+        aim += line.amount
+      }
+    }
+
+    return (horizontalPos, depth)
+  }
+
   public func runPart1() throws -> Int {
     let inputString = try String(contentsOf: inputURL)
     let lines: [String] = inputString
@@ -58,9 +80,13 @@ public struct Day2 {
   }
 
   public func runPart2() throws -> Int {
-//    let inputString = try String(contentsOf: inputURL)
-//    let input: [String] = inputString
-//      .components(separatedBy: "\n")
-    return 2
+    let inputString = try String(contentsOf: inputURL)
+    let lines: [String] = inputString
+      .components(separatedBy: "\n")
+      .filter { !$0.isEmpty }
+
+    let (horizontalPos, depth) = try calculateCourseUpdated(input: lines)
+
+    return horizontalPos * depth
   }
 }
