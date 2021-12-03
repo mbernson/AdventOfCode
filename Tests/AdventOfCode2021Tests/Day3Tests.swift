@@ -19,21 +19,26 @@ final class Day3Tests: XCTestCase {
   let day3 = Day3()
 
   func testParsing() throws {
-    XCTAssertEqual(day3.mostCommonDigit(row: 0, in: input), 1)
-    XCTAssertEqual(day3.mostCommonDigit(row: 1, in: input), 0)
-    XCTAssertEqual(day3.mostCommonDigit(row: 2, in: input), 1)
-    XCTAssertEqual(day3.mostCommonDigit(row: 3, in: input), 1)
-    XCTAssertEqual(day3.mostCommonDigit(row: 4, in: input), 0)
+    XCTAssertEqual(day3.mostCommonDigit(column: 0, in: input), 1)
+    XCTAssertEqual(day3.mostCommonDigit(column: 1, in: input), 0)
+    XCTAssertEqual(day3.mostCommonDigit(column: 2, in: input), 1)
+    XCTAssertEqual(day3.mostCommonDigit(column: 3, in: input), 1)
+    XCTAssertEqual(day3.mostCommonDigit(column: 4, in: input), 0)
 
-    XCTAssertEqual(day3.leastCommonDigit(row: 0, in: input), 0)
-    XCTAssertEqual(day3.leastCommonDigit(row: 1, in: input), 1)
-    XCTAssertEqual(day3.leastCommonDigit(row: 2, in: input), 0)
-    XCTAssertEqual(day3.leastCommonDigit(row: 3, in: input), 0)
-    XCTAssertEqual(day3.leastCommonDigit(row: 4, in: input), 1)
+    XCTAssertEqual(day3.leastCommonDigit(column: 0, in: input), 0)
+    XCTAssertEqual(day3.leastCommonDigit(column: 1, in: input), 1)
+    XCTAssertEqual(day3.leastCommonDigit(column: 2, in: input), 0)
+    XCTAssertEqual(day3.leastCommonDigit(column: 3, in: input), 0)
+    XCTAssertEqual(day3.leastCommonDigit(column: 4, in: input), 1)
   }
 
-  func testRates() throws {
+  func testRatesPart1() throws {
     XCTAssertEqual(day3.gammaRate(input: input), 22)
     XCTAssertEqual(day3.epsilonRate(input: input), 9)
+  }
+
+  func testRatesPart2() throws {
+    XCTAssertEqual(day3.oxygenGeneratorRating(input: input), 23)
+    XCTAssertEqual(day3.co2ScrubberRating(input: input), 10)
   }
 }

@@ -11,18 +11,14 @@ public struct Day3 {
       .components(separatedBy: "\n")
       .filter { !$0.isEmpty }
     
-    return gammaRate(input: input) * epsilonRate(input: input)
+    return gammaRate(input: input)! * epsilonRate(input: input)!
   }
 
-  public func runPart2() throws -> Int {
-    return 0
-  }
-
-  func commonDigit(row: Int, in input: [String], comparator: (Int, Int) -> Bool) -> Int {
+  private func commonDigit(column: Int, in input: [String], comparator: (Int, Int) -> Bool) -> Int {
     var result: [Int: Int] = [:]
 
     for line in input {
-      let digit = Int(String(line[line.index(line.startIndex, offsetBy: row)]))!
+      let digit = Int(String(line[line.index(line.startIndex, offsetBy: column)]))!
       if result[digit] == nil {
         result[digit] = 0
       }
@@ -30,29 +26,71 @@ public struct Day3 {
     }
 
     return result.sorted(by: { lhs, rhs in
-      comparator(lhs.value, rhs.value)
+      if lhs.value == rhs.value {
+        return comparator(lhs.key, rhs.key)
+      } else {
+        return comparator(lhs.value, rhs.value)
+      }
     }).first!.key
   }
 
-  func mostCommonDigit(row: Int, in input: [String]) -> Int {
-    commonDigit(row: row, in: input, comparator: >)
+  func mostCommonDigit(column: Int, in input: [String]) -> Int {
+    commonDigit(column: column, in: input, comparator: >)
   }
 
-  func leastCommonDigit(row: Int, in input: [String]) -> Int {
-    commonDigit(row: row, in: input, comparator: <)
+  func leastCommonDigit(column: Int, in input: [String]) -> Int {
+    commonDigit(column: column, in: input, comparator: <)
   }
 
-  func gammaRate(input: [String]) -> Int {
-    let rate: String = (0..<input[0].count).map { row in
-      String(mostCommonDigit(row: row, in: input))
+  func gammaRate(input: [String]) -> Int? {
+    let columns = (0..<input[0].count)
+    let rate: String = columns.map { column in
+      String(mostCommonDigit(column: column, in: input))
     }.joined()
-    return Int(rate, radix: 2)!
+    return Int(rate, radix: 2)
   }
 
-  func epsilonRate(input: [String]) -> Int {
-    let rate: String = (0..<input[0].count).map { row in
-      String(leastCommonDigit(row: row, in: input))
+  func epsilonRate(input: [String]) -> Int? {
+    let columns = (0..<input[0].count)
+    let rate: String = columns.map { column in
+      String(leastCommonDigit(column: column, in: input))
     }.joined()
-    return Int(rate, radix: 2)!
+    return Int(rate, radix: 2)
+  }
+
+  public func runPart2() throws -> Int {
+    let inputString = try String(contentsOf: inputURL)
+    let input: [String] = inputString
+      .components(separatedBy: "\n")
+      .filter { !$0.isEmpty }
+
+    return oxygenGeneratorRating(input: input)! * co2ScrubberRating(input: input)!
+  }
+
+  private func bitCriteria(input _input: [String], comparator: (Int, Int) -> Bool) -> Int? {
+    var input = _input
+    var result: String? = nil
+    let columns = 0..<input[0].count
+    for column in columns {
+      let mostCommonDigit = String(commonDigit(column: column, in: input, comparator: comparator))
+      input = input.filter { line in
+        let idx: String.Index = line.index(line.startIndex, offsetBy: column)
+        let c: String = String(line[idx])
+        return c == mostCommonDigit
+      }
+      if input.count == 1 {
+        result = input[0]
+      }
+    }
+
+    return result.flatMap { Int($0, radix: 2) }
+  }
+
+  func oxygenGeneratorRating(input: [String]) -> Int? {
+    bitCriteria(input: input, comparator: >)
+  }
+
+  func co2ScrubberRating(input: [String]) -> Int? {
+    bitCriteria(input: input, comparator: <)
   }
 }
