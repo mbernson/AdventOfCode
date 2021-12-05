@@ -12,25 +12,30 @@ public struct Day5 {
     var line: [Coordinate] {
       if start.x == end.x {
         // Vertical line
+        let verticalRange = stride(from: start.y, through: end.y, by: start.y < end.y ? 1 : -1)
         let x = start.x
-        if start.y < end.y {
-          return (start.y...end.y).map { Coordinate(x: x, y: $0) }
-        } else {
-          return (end.y...start.y).map { Coordinate(x: x, y: $0) }
-            .sorted(by: { lhs, rhs in lhs.y < rhs.y })
-        }
+        return verticalRange.map { Coordinate(x: x, y: $0) }
       } else if start.y == end.y {
         // Horizontal line
         let y = start.y
-        if start.x < end.x {
-          return (start.x...end.x).map { Coordinate(x: $0, y: y) }
-        } else {
-          return (end.x...start.x).map { Coordinate(x: $0, y: y) }
-//            .sorted(by: { lhs, rhs in lhs.x < rhs.x })
-        }
+        let horizontalRange = stride(from: start.x, through: end.x, by: start.x < end.x ? 1 : -1)
+        return horizontalRange.map { Coordinate(x: $0, y: y) }
       } else {
         // Not a line
         return []
+      }
+    }
+
+    var lineIncludingDiagonals: [Coordinate] {
+      if abs(start.x - end.x) == abs(start.y - end.y) {
+        // Diagonal line (45 degrees only)
+        let horizontalRange = stride(from: start.x, through: end.x, by: start.x < end.x ? 1 : -1)
+        let verticalRange = stride(from: start.y, through: end.y, by: start.y < end.y ? 1 : -1)
+        return zip(horizontalRange, verticalRange).map { x, y in
+          Coordinate(x: x, y: y)
+        }
+      } else {
+        return self.line
       }
     }
   }
@@ -48,22 +53,30 @@ public struct Day5 {
     return Vent(start: .init(x: start[0], y: start[1]), end: .init(x: end[0], y: end[1]))
   }
 
-  func overlappingCoordinates(in vents: [Vent]) -> [Coordinate] {
+  func overlappingCoordinates(in vents: [Vent], includingDiagonals: Bool) -> [Coordinate] {
     let xs = vents.map(\.start).map(\.x) + vents.map(\.end).map(\.x)
     let ys = vents.map(\.start).map(\.y) + vents.map(\.end).map(\.y)
     let width = xs.max()! + 1
     let height = ys.max()! + 1
     var grid: [[Int]] = Array(repeating: Array(repeating: 0, count: width), count: height)
 
-    for vent in vents {
-      for coordinate in vent.line {
-        grid[coordinate.y][coordinate.x] += 1
+    if includingDiagonals {
+      for vent in vents {
+        for coordinate in vent.lineIncludingDiagonals {
+          grid[coordinate.y][coordinate.x] += 1
+        }
+      }
+    } else {
+      for vent in vents {
+        for coordinate in vent.line {
+          grid[coordinate.y][coordinate.x] += 1
+        }
       }
     }
 
     var result: [Coordinate] = []
     for (y, row) in grid.enumerated() {
-      for (x, column) in row.enumerated() {
+      for (x, _) in row.enumerated() {
         if grid[y][x] >= 2 {
           result.append(Coordinate(x: x, y: y))
         }
@@ -78,14 +91,17 @@ public struct Day5 {
       .components(separatedBy: "\n")
       .filter { !$0.isEmpty }
     let vents = input.compactMap(parseLine)
-    return overlappingCoordinates(in: vents).count
+    return overlappingCoordinates(in: vents, includingDiagonals: false)
+      .count
   }
 
   public func runPart2() throws -> Int {
     let inputString = try String(contentsOf: inputURL)
     let input: [String] = inputString
       .components(separatedBy: "\n")
-
-    return 0
+      .filter { !$0.isEmpty }
+    let vents = input.compactMap(parseLine)
+    return overlappingCoordinates(in: vents, includingDiagonals: true)
+      .count
   }
 }
