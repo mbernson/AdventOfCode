@@ -1,5 +1,9 @@
 import Foundation
 
+private func stride1(from start: Int, through end: Int) -> StrideThrough<Int> {
+  stride(from: start, through: end, by: start < end ? 1 : -1)
+}
+
 public struct Day5 {
   public let inputURL = Bundle.module.url(forResource: "day5", withExtension: "txt")!
 
@@ -12,18 +16,16 @@ public struct Day5 {
     func coordinatesForLines(includingDiagonals: Bool = true) -> [Coordinate] {
       if start.x == end.x {
         // Vertical line
-        let verticalRange = stride(from: start.y, through: end.y, by: start.y < end.y ? 1 : -1)
-        let x = start.x
-        return verticalRange.map { Coordinate(x: x, y: $0) }
+        let verticalRange = stride1(from: start.y, through: end.y)
+        return verticalRange.map { Coordinate(x: start.x, y: $0) }
       } else if start.y == end.y {
         // Horizontal line
-        let y = start.y
-        let horizontalRange = stride(from: start.x, through: end.x, by: start.x < end.x ? 1 : -1)
-        return horizontalRange.map { Coordinate(x: $0, y: y) }
+        let horizontalRange = stride1(from: start.x, through: end.x)
+        return horizontalRange.map { Coordinate(x: $0, y: start.y) }
       } else if includingDiagonals && abs(start.x - end.x) == abs(start.y - end.y) {
         // Diagonal line (45 degrees only)
-        let horizontalRange = stride(from: start.x, through: end.x, by: start.x < end.x ? 1 : -1)
-        let verticalRange = stride(from: start.y, through: end.y, by: start.y < end.y ? 1 : -1)
+        let horizontalRange = stride1(from: start.x, through: end.x)
+        let verticalRange = stride1(from: start.y, through: end.y)
         return zip(horizontalRange, verticalRange).map { x, y in
           Coordinate(x: x, y: y)
         }
