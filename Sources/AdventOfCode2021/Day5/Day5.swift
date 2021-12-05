@@ -9,7 +9,7 @@ public struct Day5 {
     let start: Coordinate
     let end: Coordinate
 
-    var line: [Coordinate] {
+    func coordinatesForLines(includingDiagonals: Bool = true) -> [Coordinate] {
       if start.x == end.x {
         // Vertical line
         let verticalRange = stride(from: start.y, through: end.y, by: start.y < end.y ? 1 : -1)
@@ -20,14 +20,7 @@ public struct Day5 {
         let y = start.y
         let horizontalRange = stride(from: start.x, through: end.x, by: start.x < end.x ? 1 : -1)
         return horizontalRange.map { Coordinate(x: $0, y: y) }
-      } else {
-        // Not a line
-        return []
-      }
-    }
-
-    var lineIncludingDiagonals: [Coordinate] {
-      if abs(start.x - end.x) == abs(start.y - end.y) {
+      } else if includingDiagonals && abs(start.x - end.x) == abs(start.y - end.y) {
         // Diagonal line (45 degrees only)
         let horizontalRange = stride(from: start.x, through: end.x, by: start.x < end.x ? 1 : -1)
         let verticalRange = stride(from: start.y, through: end.y, by: start.y < end.y ? 1 : -1)
@@ -35,7 +28,8 @@ public struct Day5 {
           Coordinate(x: x, y: y)
         }
       } else {
-        return self.line
+        // Not a line
+        return []
       }
     }
   }
@@ -60,17 +54,9 @@ public struct Day5 {
     let height = ys.max()! + 1
     var grid: [[Int]] = Array(repeating: Array(repeating: 0, count: width), count: height)
 
-    if includingDiagonals {
-      for vent in vents {
-        for coordinate in vent.lineIncludingDiagonals {
-          grid[coordinate.y][coordinate.x] += 1
-        }
-      }
-    } else {
-      for vent in vents {
-        for coordinate in vent.line {
-          grid[coordinate.y][coordinate.x] += 1
-        }
+    for vent in vents {
+      for coordinate in vent.coordinatesForLines(includingDiagonals: includingDiagonals) {
+        grid[coordinate.y][coordinate.x] += 1
       }
     }
 
@@ -85,22 +71,24 @@ public struct Day5 {
     return result
   }
 
-  public func runPart1() throws -> Int {
-    let inputString = try String(contentsOf: inputURL)
+  func vents(from inputString: String) -> [Vent] {
     let input: [String] = inputString
       .components(separatedBy: "\n")
       .filter { !$0.isEmpty }
     let vents = input.compactMap(parseLine)
+    return vents
+  }
+
+  public func runPart1() throws -> Int {
+    let inputString = try String(contentsOf: inputURL)
+    let vents = vents(from: inputString)
     return overlappingCoordinates(in: vents, includingDiagonals: false)
       .count
   }
 
   public func runPart2() throws -> Int {
     let inputString = try String(contentsOf: inputURL)
-    let input: [String] = inputString
-      .components(separatedBy: "\n")
-      .filter { !$0.isEmpty }
-    let vents = input.compactMap(parseLine)
+    let vents = vents(from: inputString)
     return overlappingCoordinates(in: vents, includingDiagonals: true)
       .count
   }

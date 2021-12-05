@@ -15,50 +15,47 @@ final class Day5Tests: XCTestCase {
     "5,5 -> 8,2",
   ]
   let day5 = Day5()
-  
+
   func testParsing() throws {
     let vents = input.compactMap(day5.parseLine)
     XCTAssertEqual(vents[0].start, Day5.Coordinate(x: 0, y: 9))
     XCTAssertEqual(vents[0].end, Day5.Coordinate(x: 5, y: 9))
   }
-  
+
   func testVentLineVertical() throws {
     let vent = Day5.Vent(start: .init(x: 1, y: 1), end: .init(x: 1, y: 3))
-    XCTAssertEqual(vent.line, [
+    XCTAssertEqual(vent.coordinatesForLines(), [
       .init(x: 1, y: 1), .init(x: 1, y: 2), .init(x: 1, y: 3),
     ])
   }
-  
+
   func testVentLineHorizontal() throws {
     let vent = Day5.Vent(start: .init(x: 9, y: 7), end: .init(x: 7, y: 7))
-    // XCTAssertEqual(vent.line, [
-    //   .init(x: 9, y: 7), .init(x: 8, y: 7), .init(x: 7, y: 7),
-    // ])
-    XCTAssertEqual(vent.line, [
+    XCTAssertEqual(vent.coordinatesForLines(), [
       .init(x: 9, y: 7),
       .init(x: 8, y: 7),
       .init(x: 7, y: 7),
     ])
   }
-  
+
   func testVentLineDiagonal1() throws {
     let vent = Day5.Vent(start: .init(x: 1, y: 1), end: .init(x: 3, y: 3))
-    XCTAssertEqual(vent.lineIncludingDiagonals, [
+    XCTAssertEqual(vent.coordinatesForLines(includingDiagonals: true), [
       .init(x: 1, y: 1),
       .init(x: 2, y: 2),
       .init(x: 3, y: 3),
     ])
   }
-  
+
   func testVentLineDiagonal2() throws {
     let vent = Day5.Vent(start: .init(x: 9, y: 7), end: .init(x: 7, y: 9))
-    XCTAssertEqual(vent.lineIncludingDiagonals, [
+    XCTAssertEqual(vent.coordinatesForLines(includingDiagonals: true), [
       .init(x: 9, y: 7),
       .init(x: 8, y: 8),
       .init(x: 7, y: 9),
     ])
   }
-  
+
   func testOverlap() throws {
     let vents = input.compactMap(day5.parseLine)
     XCTAssertEqual(day5.overlappingCoordinates(in: vents, includingDiagonals: false).count, 5)
