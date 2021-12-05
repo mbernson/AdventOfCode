@@ -24,14 +24,8 @@ public struct Day4 {
   func parseGrid(string: String) -> Grid? {
     let rows = self.rows(string: string)
     assert(rows.count == rowLength)
-    for row in rows {
-      assert(row.count == rowLength)
-    }
     let columns = self.columns(rows: rows)
     assert(columns.count == rowLength)
-    for column in columns {
-      assert(column.count == rowLength)
-    }
     let numbers: [Int] = rows.reduce([], +)
     return Grid(numbers: numbers, combinations: rows + columns)
   }
