@@ -20,6 +20,10 @@ case ["day4", "part1"]:
   print(try! Day4().runPart1())
 case ["day4", "part2"]:
   print(try! Day4().runPart2())
+case ["day5", "part1"]:
+  print(try! Day5().runPart1())
+case ["day5", "part2"]:
+  print(try! Day5().runPart2())
 
 case []:
   print("No subcommand given"); exit(1)
