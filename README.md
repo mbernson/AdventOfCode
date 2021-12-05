@@ -28,15 +28,21 @@ swift test
 
 There is a CLI runner for the puzzle solutions.
 
-To run a solution:
+To run a solution: `swift run advent<year> day<day> part<1 or 2>`
 
 ```
 swift run advent2019 day1 part1
 swift run advent2019 day1 part2
+
 swift run advent2019 day2 part1
 swift run advent2019 day2 part2
-swift run advent2020 day1 part1
-swift run advent2020 day1 part2
+
+swift run advent2020 day3 part1
+swift run advent2020 day3 part2
+
+swift run advent2021 day4 part1
+swift run advent2021 day4 part2
+
 # You get the idea
 ```
 
