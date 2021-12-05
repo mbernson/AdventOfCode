@@ -23,6 +23,14 @@ public struct Day4 {
       }
     }
 
+    mutating func removeWinningBoards() -> [Grid] {
+      let winningBoards = self.winningBoards
+      grids = grids.filter { grid in
+        !grid.combinations.contains { combo in combo.isEmpty }
+      }
+      return winningBoards
+    }
+
     mutating func draw(_ number: Int) {
       drawn.append(number)
       for (index, _) in grids.enumerated() {
@@ -112,6 +120,25 @@ public struct Day4 {
   }
 
   public func runPart2() throws -> Int {
-    return 0
+    let inputString = try String(contentsOf: inputURL)
+    let (draw, grids) = parseInput(string: inputString)
+    var bingo = Bingo(grids: grids)
+
+    var allWinningBoards: [(Int, [Grid])] = []
+
+    for n in draw {
+      bingo.draw(n)
+      let winningBoards = bingo.removeWinningBoards()
+      if !winningBoards.isEmpty {
+        allWinningBoards.append((n, winningBoards))
+      }
+    }
+
+    guard let (n, winners) = allWinningBoards.last, let winner = winners.last else {
+      throw AOCError(errorDescription: "No solution")
+    }
+
+    let score = winner.numbers.reduce(0, +)
+    return score * n
   }
 }
