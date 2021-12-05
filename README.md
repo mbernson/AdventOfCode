@@ -20,7 +20,6 @@ Most of the solutions were written using test-driven development (TDD), so there
 To run the tests:
 
 ```
-swift build
 swift test
 ```
 
