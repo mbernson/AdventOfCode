@@ -7,45 +7,11 @@ public struct Day4 {
 
   public init() {}
 
+  /// Represents a single bingo card
   struct Grid {
     var numbers: [Int]
     /// All the combinations of the bingo grid that make for a valid bingo
     var combinations: [[Int]]
-  }
-
-  struct Bingo {
-    var grids: [Grid]
-    var drawn: [Int] = []
-
-    var winningBoards: [Grid] {
-      grids.filter { grid in
-        grid.combinations.contains { combo in combo.isEmpty }
-      }
-    }
-
-    mutating func removeWinningBoards() -> [Grid] {
-      let winningBoards = self.winningBoards
-      grids = grids.filter { grid in
-        !grid.combinations.contains { combo in combo.isEmpty }
-      }
-      return winningBoards
-    }
-
-    mutating func draw(_ number: Int) {
-      drawn.append(number)
-      for (index, _) in grids.enumerated() {
-        grids[index].combinations = grids[index].combinations.map { combo in
-          combo.filter { $0 != number }
-        }
-        grids[index].numbers = grids[index].numbers.filter { $0 != number }
-      }
-    }
-
-    mutating func draw(_ numbers: [Int]) {
-      for number in numbers {
-        draw(number)
-      }
-    }
   }
 
   func parseInput(string: String) -> (draw: [Int], grids: [Grid]) {
@@ -86,18 +52,40 @@ public struct Day4 {
     }
   }
 
-  /// Get the 2 diagonal rows from a bingo grid that contain the same amount of numbers as the rows/columns
-  func diagonals(rows: [[Int]]) -> [[Int]] {
-    let count = rows[0].count
-    let xs = 0..<count
-    let a: [Int] = xs.map { i in
-      rows[i][i]
+  /// Represents a bingo game that can draw numbers and determine the winner(s)
+  struct Bingo {
+    var grids: [Grid]
+    var drawn: [Int] = []
+
+    var winningBoards: [Grid] {
+      grids.filter { grid in
+        grid.combinations.contains { combo in combo.isEmpty }
+      }
     }
-    let b: [Int] = xs.map { i in
-      let j: Int = abs(i - count + 1)
-      return rows[i][j]
+
+    mutating func removeWinningBoards() -> [Grid] {
+      let winningBoards = self.winningBoards
+      grids = grids.filter { grid in
+        !grid.combinations.contains { combo in combo.isEmpty }
+      }
+      return winningBoards
     }
-    return [a, b]
+
+    mutating func draw(_ number: Int) {
+      drawn.append(number)
+      for (index, _) in grids.enumerated() {
+        grids[index].combinations = grids[index].combinations.map { combo in
+          combo.filter { $0 != number }
+        }
+        grids[index].numbers = grids[index].numbers.filter { $0 != number }
+      }
+    }
+
+    mutating func draw(_ numbers: [Int]) {
+      for number in numbers {
+        draw(number)
+      }
+    }
   }
 
   public func runPart1() throws -> Int {
