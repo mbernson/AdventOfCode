@@ -6,25 +6,30 @@ public struct Day6 {
   public init() {}
 
   class Fishbowl {
-    var fish: [Int]
+    var fish: [Int] = Array(repeating: 0, count: 8 + 1)
+
+    var amountOfFish: Int {
+      fish.reduce(0, +)
+    }
 
     init(input: [Int]) {
-      self.fish = input
+      for f in input {
+        fish[f] = fish[f] + 1
+      }
     }
 
     func cycle() {
-      var existing: [Int] = []
-      var newborn: [Int] = []
-      for fish in self.fish {
-        switch fish {
-        case 0:
-          existing.append(6)
-          newborn.append(8)
-        default:
-          existing.append(fish - 1)
-        }
-      }
-      fish = existing + newborn
+      var result: [Int] = Array(repeating: 0, count: 8 + 1)
+      result[0] = fish[1]
+      result[1] = fish[2]
+      result[2] = fish[3]
+      result[3] = fish[4]
+      result[4] = fish[5]
+      result[5] = fish[6]
+      result[6] = fish[7] + fish[0]
+      result[7] = fish[8]
+      result[8] = fish[0]
+      self.fish = result
     }
   }
 
@@ -40,15 +45,21 @@ public struct Day6 {
       fishbowl.cycle()
     }
 
-    return fishbowl.fish.count
+    return fishbowl.amountOfFish
   }
 
   public func runPart2() throws -> Int {
-//    let inputString = try String(contentsOf: inputURL)
-//    let input: [Int] = inputString
-//      .components(separatedBy: "\n")
-//      .compactMap(Int.init)
+    let inputString = try String(contentsOf: inputURL)
+    let input: [Int] = inputString
+      .trimmingCharacters(in: .whitespacesAndNewlines)
+      .components(separatedBy: ",")
+      .compactMap(Int.init)
 
-    return 0
+    let fishbowl = Fishbowl(input: input)
+    for _ in 1...256 {
+      fishbowl.cycle()
+    }
+
+    return fishbowl.amountOfFish
   }
 }
