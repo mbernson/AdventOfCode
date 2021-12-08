@@ -31,7 +31,8 @@ case ["day6", "part2"]:
 case ["day7", "part1"]:
   print(try! Day7().runPart1())
 case ["day7", "part2"]:
-  print(try! Day7().runPart2())
+  var day7 = Day7()
+  print(try! day7.runPart2())
 
 case []:
   print("No subcommand given"); exit(1)

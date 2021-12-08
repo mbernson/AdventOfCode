@@ -33,8 +33,52 @@ public struct Day7 {
     return cheapestPositionFuelCost(input: input)
   }
 
-  public func runPart2() throws -> Int {
-    return 0
+  public mutating func cheapestPositionFuelCostLinearRate(input: [Int]) -> Int {
+    let min = input.min()!
+    let max = input.max()!
+
+    var cost_best: Int = Int.max
+    for position in min...max {
+      let cost_i = costLinearRate(input: input, targetPosition: position)
+      if cost_i < cost_best {
+        cost_best = cost_i
+      }
+    }
+    return cost_best
+  }
+
+  private var memo: [Int:Int] = [:]
+
+  mutating func costLinearRate(input: [Int], targetPosition: Int) -> Int {
+    if let m = memo[targetPosition] {
+      return m
+    }
+
+    var sum = 0
+    for position in input {
+      sum += moveFrom(position, to: targetPosition)
+    }
+    memo[targetPosition] = sum
+    return sum
+  }
+
+  func moveFrom(_ start: Int, to end: Int) -> Int {
+    var acc = 0
+    var count = 0
+    for _ in stride(from: start, through: end, by: start < end ? 1 : -1) {
+      count += 1
+      acc += count
+    }
+    if start < end {
+      acc += start - end
+    } else {
+      acc += end - start
+    }
+    return acc - 1
+  }
+
+  public mutating func runPart2() throws -> Int {
+    return cheapestPositionFuelCostLinearRate(input: input)
   }
 }
 
