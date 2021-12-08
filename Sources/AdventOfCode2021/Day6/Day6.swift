@@ -6,7 +6,7 @@ public struct Day6 {
   public init() {}
 
   class Fishbowl {
-    var fish: [Int] = Array(repeating: 0, count: 8 + 1)
+    var fish: [Int] = Array(repeating: 0, count: 9)
 
     var amountOfFish: Int {
       fish.reduce(0, +)
@@ -19,17 +19,17 @@ public struct Day6 {
     }
 
     func cycle() {
-      var result: [Int] = Array(repeating: 0, count: 8 + 1)
-      result[0] = fish[1]
-      result[1] = fish[2]
-      result[2] = fish[3]
-      result[3] = fish[4]
-      result[4] = fish[5]
-      result[5] = fish[6]
-      result[6] = fish[7] + fish[0]
-      result[7] = fish[8]
-      result[8] = fish[0]
-      self.fish = result
+      fish = [
+        fish[1],
+        fish[2],
+        fish[3],
+        fish[4],
+        fish[5],
+        fish[6],
+        fish[7] + fish[0],
+        fish[8],
+        fish[0],
+      ]
     }
   }
 
