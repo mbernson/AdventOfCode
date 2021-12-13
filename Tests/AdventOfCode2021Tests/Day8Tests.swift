@@ -16,7 +16,7 @@ final class Day8Tests: XCTestCase {
   ]
   let day8 = Day8()
 
-  func testFoo() throws {
+  func testPart1() throws {
     let entries: [Day8.Entry] = input.compactMap(Day8.Entry.init(line:))
     XCTAssertEqual(day8.countDigitsPart1(in: entries), 26)
   }
