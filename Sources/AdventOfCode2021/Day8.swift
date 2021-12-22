@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Day8 {
-  public let inputURL = Bundle.module.url(forResource: "day8", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "Input/day8", withExtension: "txt")!
 
   public init() {}
 

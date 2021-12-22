@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Day2 {
-  public let inputURL = Bundle.module.url(forResource: "day2", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "Input/day2", withExtension: "txt")!
 
   public init() {}
 
@@ -21,7 +21,7 @@ public struct Day2 {
           let direction = Direction(rawValue: components[0]),
           let amount = Int(components[1])
     else {
-      throw AOCError(errorDescription: "Invalid line: \(line)")
+      throw AdventError(errorDescription: "Invalid line: \(line)")
     }
     return Line(direction: direction, amount: amount)
   }

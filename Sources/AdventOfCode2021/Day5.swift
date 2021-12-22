@@ -5,7 +5,7 @@ private func stride1(from start: Int, through end: Int) -> StrideThrough<Int> {
 }
 
 public struct Day5 {
-  public let inputURL = Bundle.module.url(forResource: "day5", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "Input/day5", withExtension: "txt")!
 
   public init() {}
 

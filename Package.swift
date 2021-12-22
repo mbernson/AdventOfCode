@@ -69,15 +69,7 @@ let package = Package(
     .testTarget(name: "Advent2020Tests", dependencies: ["Advent2020"]),
 
     // 2021 solutions
-    .target(name: "AdventOfCode2021", resources: [
-      .copy("Day1/day1.txt"),
-      .copy("Day2/day2.txt"),
-      .copy("Day3/day3.txt"),
-      .copy("Day4/day4.txt"),
-      .copy("Day5/day5.txt"),
-      .copy("Day6/day6.txt"),
-      .copy("Day8/day8.txt"),
-    ]),
+    .target(name: "AdventOfCode2021", resources: [.copy("Input")]),
     .testTarget(name: "AdventOfCode2021Tests", dependencies: ["AdventOfCode2021"]),
 
     .executableTarget(name: "Advent2021", dependencies: ["AdventOfCode2021"]),

@@ -1,7 +1,7 @@
 import Foundation
 
 public struct Day4 {
-  public let inputURL = Bundle.module.url(forResource: "day4", withExtension: "txt")!
+  public let inputURL = Bundle.module.url(forResource: "Input/day4", withExtension: "txt")!
 
   let rowLength: Int = 5
 
@@ -98,7 +98,7 @@ public struct Day4 {
       }
     }
 
-    throw AOCError(errorDescription: "No solution")
+    throw AdventError(errorDescription: "No solution")
   }
 
   public func runPart2() throws -> Int {
@@ -117,7 +117,7 @@ public struct Day4 {
     }
 
     guard let (n, winners) = allWinningBoards.last, let winner = winners.last else {
-      throw AOCError(errorDescription: "No solution")
+      throw AdventError(errorDescription: "No solution")
     }
 
     let score = winner.numbers.reduce(0, +)
