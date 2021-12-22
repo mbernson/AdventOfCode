@@ -5,13 +5,39 @@ public struct Day9 {
 
   public init() {}
 
-  struct Point: Equatable {
+  struct Point: Equatable, Hashable {
     let x: Int
     let y: Int
     let value: Int
   }
 
-  func lowPoints(in input: [[Int]]) -> [Int] {
+  struct Basin: Equatable {
+    let points: Set<Point>
+    var size: Int { points.count }
+  }
+
+  func basins(in input: [[Int]]) -> [Basin] {
+    lowPoints(in: input).map { point in
+      basin(for: point, input: input)
+    }
+  }
+
+  func basin(for point: Point, input: [[Int]]) -> Basin {
+    return Basin(points: Set([point]).union(increasingPoints(around: point, input: input)))
+  }
+
+  private func increasingPoints(around point: Point, input: [[Int]]) -> Set<Point> {
+    let ns = Set(neighbors(x: point.x, y: point.y, input: input)
+      .filter { p in
+        p.value < 9 && p.value > point.value
+      })
+    let others = ns.flatMap { neighor in
+      increasingPoints(around: neighor, input: input)
+    }
+    return ns.union(others)
+  }
+
+  func lowPoints(in input: [[Int]]) -> [Point] {
     var result: [Point] = []
 
     for (rowIndex, row) in input.enumerated() {
@@ -24,7 +50,7 @@ public struct Day9 {
       }
     }
 
-    return result.map(\.value)
+    return result
   }
 
   func neighbors(x: Int, y: Int, input: [[Int]]) -> [Point] {
@@ -60,11 +86,24 @@ public struct Day9 {
       }
 
     return lowPoints(in: input)
-      .map { 1 + $0 }
+      .map { 1 + $0.value }
       .reduce(0, +)
   }
 
   public func runPart2() throws -> Int {
-    return 0
+    let inputString = try String(contentsOf: inputURL)
+    let input: [[Int]] = inputString
+      .components(separatedBy: "\n")
+      .filter { !$0.isEmpty }
+      .map { line in
+        line.map(String.init).compactMap(Int.init)
+      }
+
+    let largestBasins: [Basin] = basins(in: input)
+      .sorted(by: { $0.size > $1.size })
+
+    return largestBasins[0...2]
+      .map(\.size)
+      .reduce(1, *)
   }
 }

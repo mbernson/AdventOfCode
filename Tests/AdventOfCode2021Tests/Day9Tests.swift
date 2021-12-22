@@ -26,6 +26,14 @@ final class Day9Tests: XCTestCase {
   }
 
   func testLowPoints() throws {
-    XCTAssertEqual(day9.lowPoints(in: input), [1, 0, 5, 5])
+    XCTAssertEqual(day9.lowPoints(in: input).map(\.value), [1, 0, 5, 5])
+  }
+
+  func testBasins() throws {
+    XCTAssertEqual(day9.basin(for: Point(x: 1, y: 0, value: 1), input: input).size, 3)
+    XCTAssertEqual(day9.basin(for: Point(x: 9, y: 0, value: 0), input: input).size, 9)
+    XCTAssertEqual(day9.basin(for: Point(x: 2, y: 2, value: 5), input: input).size, 14)
+    XCTAssertEqual(day9.basin(for: Point(x: 6, y: 4, value: 5), input: input).size, 9)
+    XCTAssertEqual(day9.basins(in: input).count, 4)
   }
 }
