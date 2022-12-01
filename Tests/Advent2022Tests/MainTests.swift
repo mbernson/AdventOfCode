@@ -3,50 +3,50 @@ import class Foundation.Bundle
 
 final class MainTests: XCTestCase {
 
-  func test2022Day1() throws {
-    XCTAssertEqual(try runAdventCommand(arguments: ["day1", "part1"]), "68775\n")
-    // XCTAssertEqual(try runAdventCommand(arguments: ["day1", "part2"]), "0\n")
-  }
-
-  // MARK: Helpers
-
-  private func runAdventCommand(arguments: [String]?) throws -> String? {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct
-    // results.
-
-    // Some of the APIs that we use below are available in macOS 10.13 and above.
-    guard #available(macOS 10.13, *) else {
-      XCTFail("Unsupported macOS version")
+    func test2022Day1() throws {
+        XCTAssertEqual(try runAdventCommand(arguments: ["day1", "part1"]), "68775\n")
+        XCTAssertEqual(try runAdventCommand(arguments: ["day1", "part2"]), "202585\n")
     }
 
-    let executable = productsDirectory.appendingPathComponent("advent2022")
+    // MARK: Helpers
 
-    let process = Process()
-    process.executableURL = executable
-    process.arguments = arguments
+    private func runAdventCommand(arguments: [String]?) throws -> String? {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct
+        // results.
 
-    let pipe = Pipe()
-    process.standardOutput = pipe
+        // Some of the APIs that we use below are available in macOS 10.13 and above.
+        guard #available(macOS 10.13, *) else {
+            XCTFail("Unsupported macOS version")
+        }
 
-    try process.run()
-    process.waitUntilExit()
+        let executable = productsDirectory.appendingPathComponent("advent2022")
 
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: .utf8)
+        let process = Process()
+        process.executableURL = executable
+        process.arguments = arguments
 
-    return output
-  }
+        let pipe = Pipe()
+        process.standardOutput = pipe
 
-  /// Returns path to the built products directory.
-  var productsDirectory: URL {
+        try process.run()
+        process.waitUntilExit()
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: data, encoding: .utf8)
+
+        return output
+    }
+
+    /// Returns path to the built products directory.
+    var productsDirectory: URL {
 #if os(macOS)
-    for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
-      return bundle.bundleURL.deletingLastPathComponent()
-    }
-    fatalError("couldn't find the products directory")
+        for bundle in Bundle.allBundles where bundle.bundlePath.hasSuffix(".xctest") {
+            return bundle.bundleURL.deletingLastPathComponent()
+        }
+        fatalError("couldn't find the products directory")
 #else
-    return Bundle.main.bundleURL
+        return Bundle.main.bundleURL
 #endif
-  }
+    }
 }
