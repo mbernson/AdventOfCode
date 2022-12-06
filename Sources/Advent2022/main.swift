@@ -32,6 +32,11 @@ case ["day5", "part2"]:
     } else {
         print("Error: This solution requires macOS 13")
     }
+case ["day6", "part1"]:
+    print(try! Day6().runPart1())
+case ["day6", "part2"]:
+    print(try! Day6().runPart2())
+
 case []:
     print("No subcommand given"); exit(1)
 default:
