@@ -14,15 +14,24 @@ public struct Day6 {
         }
     }
 
+    public func runPart2() throws -> Int {
+        let input = try String(contentsOf: inputURL)
+        if let range = findMessage(in: input) {
+            return range.endIndex
+        } else {
+            throw AdventError(errorDescription: "No solution found for this input")
+        }
+    }
+
     func findMarker(in input: String) -> Range<Int>? {
-        findMarker(in: input, length: 4)
+        firstUniqueSequence(in: input, ofLength: 4)
     }
 
     func findMessage(in input: String) -> Range<Int>? {
-        findMarker(in: input, length: 14)
+        firstUniqueSequence(in: input, ofLength: 14)
     }
 
-    private func findMarker(in input: String, length: Int) -> Range<Int>? {
+    private func firstUniqueSequence(in input: String, ofLength length: Int) -> Range<Int>? {
         for (index, _) in input.enumerated() {
             let startIndex = input.index(input.startIndex, offsetBy: index)
             let endIndex = input.index(startIndex, offsetBy: length)
@@ -33,14 +42,5 @@ public struct Day6 {
             }
         }
         return nil
-    }
-
-    public func runPart2() throws -> Int {
-        let input = try String(contentsOf: inputURL)
-        if let range = findMessage(in: input) {
-            return range.endIndex
-        } else {
-            throw AdventError(errorDescription: "No solution found for this input")
-        }
     }
 }
