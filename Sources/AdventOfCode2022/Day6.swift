@@ -15,19 +15,32 @@ public struct Day6 {
     }
 
     func findMarker(in input: String) -> Range<Int>? {
+        findMarker(in: input, length: 4)
+    }
+
+    func findMessage(in input: String) -> Range<Int>? {
+        findMarker(in: input, length: 14)
+    }
+
+    private func findMarker(in input: String, length: Int) -> Range<Int>? {
         for (index, _) in input.enumerated() {
             let startIndex = input.index(input.startIndex, offsetBy: index)
-            let endIndex = input.index(startIndex, offsetBy: 4)
+            let endIndex = input.index(startIndex, offsetBy: length)
             let range = startIndex..<endIndex
             let xs = input[range]
-            if xs.count == 4 && Set(xs).count == 4 {
-                return index..<(index + 4)
+            if xs.count == length && Set(xs).count == length {
+                return index..<(index + length)
             }
         }
         return nil
     }
 
     public func runPart2() throws -> Int {
-        return 0
+        let input = try String(contentsOf: inputURL)
+        if let range = findMessage(in: input) {
+            return range.endIndex
+        } else {
+            throw AdventError(errorDescription: "No solution found for this input")
+        }
     }
 }
