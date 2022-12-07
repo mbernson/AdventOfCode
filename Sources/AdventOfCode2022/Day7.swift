@@ -142,6 +142,21 @@ public struct Day7 {
     }
 
     public func runPart2() throws -> Int {
-        return 0
+        let lines = try String(contentsOf: inputURL)
+            .components(separatedBy: "\n")
+
+        let root = createDirectoryStructure(from: lines)
+        let directories = flatten(directory: root)
+
+        let calculator = SizeCalculator()
+        let sizes = directories.map(calculator.calculateTotalSize)
+
+        let total = 70_000_000
+        let requiredFreeSpace = 30_000_000
+
+        let used = calculator.calculateTotalSize(of: root)
+        let free = total - used
+
+        return sizes.sorted().first { size in size >= (requiredFreeSpace - free) }!
     }
 }
