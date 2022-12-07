@@ -78,9 +78,38 @@ public struct Day11 {
 
     public func runPart2() throws -> Int {
         let input: [Int] = input.map(String.init).compactMap(Int.init)
-        print(input)
-        assert(input.count == 10 * 10)
-        return 0
+        var grid = Grid(width: 10, height: 10, grid: input)
+        assert(grid.grid.count == grid.width * grid.height)
+
+        for step in 1...10_000 {
+            // First, the energy level of each octopus increases by 1
+            grid.grid = grid.grid.map { $0 + 1 }
+            // Then, any octopus with an energy level greater than 9 flashes
+            var flashedPoints: [Grid.Point] = []
+            while grid.grid.contains(where: { $0 > 9 }) {
+                for y in 0..<grid.height {
+                    for x in 0..<grid.width {
+                        if grid[x, y] > 9 {
+                            flashedPoints.append(.init(x: x, y: y))
+                            grid[x, y] = 0
+                            for point in grid.adjacentPoints(x: x, y: y) {
+                                grid[point.x, point.y] += 1
+                            }
+                        }
+                    }
+                }
+            }
+            // Finally, any octopus that flashed during this step has its energy level set to 0
+            for point in flashedPoints {
+                grid[point.x, point.y] = 0
+            }
+            let flashes = flashedPoints.count
+
+            if flashes == grid.grid.count {
+                return step
+            }
+        }
+        fatalError("Solution not found")
     }
 
     func debugPrint(_ grid: Grid) {
