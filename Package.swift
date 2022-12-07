@@ -5,6 +5,8 @@ import PackageDescription
 
 let package = Package(
   name: "AdventOfCode",
+  // The new Swift regex features are only supported as of macOS 13 and iOS 16.
+  platforms: [.macOS(.v13), .iOS(.v16)],
   products: [
     // Products define the executables and libraries a package produces, and make them visible to other packages.
 

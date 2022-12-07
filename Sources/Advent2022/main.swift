@@ -21,17 +21,9 @@ case ["day4", "part1"]:
 case ["day4", "part2"]:
     print(try! Day4().runPart2())
 case ["day5", "part1"]:
-    if #available(macOS 13.0, *) {
-        print(try! Day5().runPart1())
-    } else {
-        print("Error: This solution requires macOS 13")
-    }
+    print(try! Day5().runPart1())
 case ["day5", "part2"]:
-    if #available(macOS 13.0, *) {
-        print(try! Day5().runPart2())
-    } else {
-        print("Error: This solution requires macOS 13")
-    }
+    print(try! Day5().runPart2())
 case ["day6", "part1"]:
     print(try! Day6().runPart1())
 case ["day6", "part2"]:

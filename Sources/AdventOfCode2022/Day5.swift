@@ -1,6 +1,5 @@
 import Foundation
 
-@available(macOS 13.0, *)
 public struct Day5 {
     public let inputURL = Bundle.module.url(forResource: "Input/day5", withExtension: "txt")!
 

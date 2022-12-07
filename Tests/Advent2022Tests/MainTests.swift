@@ -15,11 +15,6 @@ final class MainTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
 
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
-        guard #available(macOS 10.13, *) else {
-            XCTFail("Unsupported macOS version")
-        }
-
         let executable = productsDirectory.appendingPathComponent("advent2022")
 
         let process = Process()
