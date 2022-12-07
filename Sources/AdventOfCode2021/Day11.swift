@@ -14,118 +14,82 @@ public struct Day11 {
 2623834788
 """
 
-    let exampleInput = """
-5483143223
-2745854711
-5264556173
-6141336146
-6357385478
-4167524645
-2176841721
-6882881134
-4846848554
-5283751526
-"""
-
     public init() {}
+
+    public func runPart1() throws -> Int {
+        let input: [Int] = input.map(String.init).compactMap(Int.init)
+        return countFlashes(in: input, steps: 100)
+    }
 
     func countFlashes(in input: [Int], steps: Int) -> Int {
         var grid = Grid(width: 10, height: 10, grid: input)
-        assert(grid.grid.count == grid.width * grid.height)
+
         print("Initial state:")
         debugPrint(grid)
         print()
+
         var totalFlashes = 0
         for step in 1...steps {
-            // First, the energy level of each octopus increases by 1
-            grid.grid = grid.grid.map { $0 + 1 }
-            // Then, any octopus with an energy level greater than 9 flashes
-            var flashedPoints: [Grid.Point] = []
-            while grid.grid.contains(where: { $0 > 9 }) {
-                for y in 0..<grid.height {
-                    for x in 0..<grid.width {
-                        if grid[x, y] > 9 {
-                            flashedPoints.append(.init(x: x, y: y))
-                            grid[x, y] = 0
-                            for point in grid.adjacentPoints(x: x, y: y) {
-                                grid[point.x, point.y] += 1
-                            }
-                        }
-                    }
-                }
-            }
-            // Finally, any octopus that flashed during this step has its energy level set to 0
-            for point in flashedPoints {
-                grid[point.x, point.y] = 0
-            }
-            let flashes = flashedPoints.count
-            totalFlashes += flashes
+            let flashes = grid.flashFish()
+            totalFlashes += flashes.count
 
             if step % 10 == 0 {
-                print("After step \(step): \(flashes) fish flashed")
+                print("After step \(step): \(flashes.count) fish flashed")
                 debugPrint(grid)
                 print()
             }
         }
-        return totalFlashes
-    }
 
-    public func runPart1() throws -> Int {
-        let input: [Int] = input.map(String.init).compactMap(Int.init)
-        assert(input.count == 10 * 10, "Wrong input size")
-        return countFlashes(in: input, steps: 100)
+        return totalFlashes
     }
 
     public func runPart2() throws -> Int {
         let input: [Int] = input.map(String.init).compactMap(Int.init)
         var grid = Grid(width: 10, height: 10, grid: input)
-        assert(grid.grid.count == grid.width * grid.height)
 
         for step in 1...10_000 {
-            // First, the energy level of each octopus increases by 1
-            grid.grid = grid.grid.map { $0 + 1 }
-            // Then, any octopus with an energy level greater than 9 flashes
-            var flashedPoints: [Grid.Point] = []
-            while grid.grid.contains(where: { $0 > 9 }) {
-                for y in 0..<grid.height {
-                    for x in 0..<grid.width {
-                        if grid[x, y] > 9 {
-                            flashedPoints.append(.init(x: x, y: y))
-                            grid[x, y] = 0
-                            for point in grid.adjacentPoints(x: x, y: y) {
-                                grid[point.x, point.y] += 1
-                            }
+            let flashes = grid.flashFish()
+
+            if flashes.count == grid.grid.count {
+                return step
+            }
+        }
+
+        fatalError("Solution not found")
+    }
+}
+
+extension Day11.Grid {
+    mutating func flashFish() -> [Point] {
+        // First, the energy level of each octopus increases by 1
+        grid = grid.map { $0 + 1 }
+
+        // Then, any octopus with an energy level greater than 9 flashes
+        var flashedPoints: [Point] = []
+        while grid.contains(where: { $0 > 9 }) {
+            for y in 0..<height {
+                for x in 0..<width {
+                    if self[x, y] > 9 {
+                        flashedPoints.append(.init(x: x, y: y))
+                        self[x, y] = 0
+                        for point in adjacentPoints(x: x, y: y) {
+                            self[point.x, point.y] += 1
                         }
                     }
                 }
             }
-            // Finally, any octopus that flashed during this step has its energy level set to 0
-            for point in flashedPoints {
-                grid[point.x, point.y] = 0
-            }
-            let flashes = flashedPoints.count
-
-            if flashes == grid.grid.count {
-                return step
-            }
         }
-        fatalError("Solution not found")
-    }
 
-    func debugPrint(_ grid: Grid) {
-        for row in 0..<grid.height {
-            let offset = row * grid.width
-
-            print(grid.grid[offset..<(offset + grid.width)].map { value in
-                if value > 9 {
-                    return "X"
-                } else {
-                    return String(value)
-                }
-            }.joined(separator: ""))
+        // Finally, any octopus that flashed during this step has its energy level set to 0
+        for point in flashedPoints {
+            self[point.x, point.y] = 0
         }
-    }
 
+        return flashedPoints
+    }
+}
+
+extension Day11 {
     struct Grid {
         typealias Tile = Int
 
@@ -139,16 +103,12 @@ public struct Day11 {
         var grid: [Tile]
 
         subscript(x: Int, y: Int) -> Tile {
-            get {
-                grid[y * width + x]
-            }
-            set(newValue) {
-                grid[y * width + x] = newValue
-            }
+            get { grid[y * width + x] }
+            set(newValue) { grid[y * width + x] = newValue }
         }
 
         /// Checks whether a point is within the grid.
-        private func isInBounds(x: Int, y: Int) -> Bool {
+        func isInBounds(x: Int, y: Int) -> Bool {
             return x >= 0 && x < width &&
             y >= 0 && y < height
         }
@@ -167,27 +127,12 @@ public struct Day11 {
             }
             return result
         }
+    }
 
-        /// Gets the tiles directly adjacent to a point.
-        func adjacentTiles(x: Int, y: Int) -> [Tile] {
-            adjacentPoints(x: x, y: y)
-                .map { point in
-                    self[point.x, point.y]
-                }
-        }
-
-        /// Recursively finds all the points matching the predicate, which are connected to the given point.
-        func findPointsConnectedTo(x: Int, y: Int, visitedSet: Set<Point> = Set(), matching predicate: (Point) -> Bool) -> Set<Point> {
-            var set = visitedSet
-            for point in adjacentPoints(x: x, y: y) {
-                if predicate(point) {
-                    if !set.contains(point) {
-                        set.insert(point)
-                        set = set.union(findPointsConnectedTo(x: point.x, y: point.y, visitedSet: set, matching: predicate))
-                    }
-                }
-            }
-            return set
+    func debugPrint(_ grid: Grid) {
+        for row in 0..<grid.height {
+            let offset = row * grid.width
+            print(grid.grid[offset..<(offset + grid.width)].map(String.init).joined(separator: ""))
         }
     }
 }
