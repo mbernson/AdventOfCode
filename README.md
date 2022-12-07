@@ -1,7 +1,5 @@
 # AdventOfCode
 
-[![Build status](https://github.com/mbernson/AdventOfCode/workflows/Tests/badge.svg)](https://github.com/mbernson/AdventOfCode/actions)
-
 This repository contains my Advent of Code (AoC) solutions, written in Swift.
 
 ## How to use the code
@@ -9,7 +7,7 @@ This repository contains my Advent of Code (AoC) solutions, written in Swift.
 1. Download and install Xcode, for example from the Mac App Store.
 1. Clone this repository and double-click on the `Package.swift` file. An Xcode workspace should open.
 
-The directory structure is based on the years and days of AoC. There are seperate directories for reused components such as the intcode machine.
+The directory structure is based on the years and days of AoC. There are seperate targets for certain reusable components such as the intcode machine.
 
 ### Running all tests
 
