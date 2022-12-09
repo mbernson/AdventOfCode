@@ -12,35 +12,17 @@ public struct Day8 {
     }
 
     func visibleTrees(in grid: Grid) -> Int {
-        var result: Set<Grid.Point> = []
-
-        for y in 0..<grid.height {
-            for x in 0..<grid.width {
-                if grid.isTreeVisibleOutsideOfGrid(x: x, y: y) {
-                    result.insert(.init(x: x, y: y))
-                }
-            }
-        }
-
-        return result.count
-    }
-
-    func highestScenicScore(in grid: Grid) -> Int {
-        var scores: Set<Int> = []
-
-        for y in 0..<grid.height {
-            for x in 0..<grid.width {
-                scores.insert(grid.scenicScore(x: x, y: y))
-            }
-        }
-
-        return scores.max()!
+        grid.filter(grid.isTreeVisibleOutsideOfGrid).count
     }
 
     public func runPart2() throws -> Int {
         let input: [Int] = try String(contentsOf: inputURL).map(String.init).compactMap(Int.init)
         let grid = Grid(width: 99, height: 99, memory: input)
         return highestScenicScore(in: grid)
+    }
+
+    func highestScenicScore(in grid: Grid) -> Int {
+        grid.map(grid.scenicScore).max()!
     }
 }
 
@@ -69,29 +51,42 @@ extension Day8 {
             set(newValue) { memory[y * width + x] = newValue }
         }
 
+        func map<T>(_ transform: (Int, Int) -> T) -> [T] {
+            (0..<height).flatMap { y in
+                (0..<width).map { x in
+                    transform(x, y)
+                }
+            }
+        }
+
+        func filter(_ predicate: (Int, Int) -> Bool) -> [Point] {
+            (0..<height).flatMap { y in
+                (0..<width).compactMap { x in
+                    predicate(x, y) ? Point(x: x, y: y) : nil
+                }
+            }
+        }
+
         func isTreeVisibleOutsideOfGrid(x: Int, y: Int) -> Bool {
             let value = self[x, y]
-            func isVerticalRangeSatisfactory(_ range: Range<Int>) -> Bool {
-                range.map { y in self[x, y] }.allSatisfy { $0 < value }
-            }
-            func isHorizontalRangeSatisfactory(_ range: Range<Int>) -> Bool {
-                range.map { x in self[x, y] }.allSatisfy { $0 < value }
+            func isVisible(_ range: Range<Int>, tile: (Int) -> Tile) -> Bool {
+                range.map(tile).allSatisfy { $0 < value }
             }
 
             // Top
-            let isTopClear = isVerticalRangeSatisfactory(0..<y)
+            let isTopClear = isVisible(0..<y) { y in self[x, y] }
             if isTopClear { return true }
 
             // Bottom
-            let isBottomClear = isVerticalRangeSatisfactory((y + 1)..<height)
+            let isBottomClear = isVisible((y + 1)..<height) { y in self[x, y] }
             if isBottomClear { return true }
 
             // Left
-            let isLeftClear = isHorizontalRangeSatisfactory(0..<x)
+            let isLeftClear = isVisible(0..<x) { x in self[x, y] }
             if isLeftClear { return true }
 
             // Right
-            let isRightClear = isHorizontalRangeSatisfactory((x + 1)..<width)
+            let isRightClear = isVisible((x + 1)..<width) { x in self[x, y] }
             if isRightClear { return true }
 
             return false
@@ -99,41 +94,23 @@ extension Day8 {
 
         func scenicScore(x: Int, y: Int) -> Int {
             let value = self[x, y]
-            var topDistance = 0
-            for yy in (0..<y).reversed() {
-                topDistance += 1
-                let t = self[x, yy]
-                if t >= value {
-                    break
+
+            func sightDistance(_ range: Array<Int>, tile: (Int) -> Tile) -> Int {
+                var distance = 0
+                for v in range {
+                    distance += 1
+                    if tile(v) >= value {
+                        break
+                    }
                 }
+                return distance
             }
 
-            var bottomDistance = 0
-            for yy in (y + 1)..<height {
-                bottomDistance += 1
-                let t = self[x, yy]
-                if t >= value {
-                    break
-                }
-            }
+            let topDistance = sightDistance(Array((0..<y).reversed())) { y in self[x, y] }
+            let bottomDistance = sightDistance(Array((y + 1)..<height)) { y in self[x, y] }
 
-            var leftDistance = 0
-            for xx in (0..<x).reversed() {
-                leftDistance += 1
-                let t = self[xx, y]
-                if t >= value {
-                    break
-                }
-            }
-
-            var rightDistance = 0
-            for xx in (x + 1)..<width {
-                rightDistance += 1
-                let t = self[xx, y]
-                if t >= value {
-                    break
-                }
-            }
+            let leftDistance = sightDistance(Array((0..<x).reversed())) { x in self[x, y] }
+            let rightDistance = sightDistance(Array((x + 1)..<width)) { x in self[x, y] }
 
             return topDistance * bottomDistance * leftDistance * rightDistance
         }

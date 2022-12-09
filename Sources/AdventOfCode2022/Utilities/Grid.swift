@@ -46,6 +46,22 @@ struct Grid {
         return result
     }
 
+    func map<T>(_ transform: (Int, Int) -> T) -> [T] {
+        (0..<height).flatMap { y in
+            (0..<width).map { x in
+                transform(x, y)
+            }
+        }
+    }
+
+    func filter(_ predicate: (Int, Int) -> Bool) -> [Point] {
+        (0..<height).flatMap { y in
+            (0..<width).compactMap { x in
+                predicate(x, y) ? Point(x: x, y: y) : nil
+            }
+        }
+    }
+
     /// Get a single horizontal row of the grid
     func row(y: Int) -> [Tile] {
         let start = y * width
