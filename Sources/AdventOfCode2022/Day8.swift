@@ -8,26 +8,39 @@ public struct Day8 {
     public func runPart1() throws -> Int {
         let input: [Int] = try String(contentsOf: inputURL).map(String.init).compactMap(Int.init)
         let grid = Grid(width: 99, height: 99, memory: input)
-        return visibleTrees(in: grid).count
+        return visibleTrees(in: grid)
     }
 
-    func visibleTrees(in grid: Grid) -> Set<Grid.Point> {
+    func visibleTrees(in grid: Grid) -> Int {
         var result: Set<Grid.Point> = []
 
         for y in 0..<grid.height {
             for x in 0..<grid.width {
-                let value = grid[x, y]
-                if grid.isTreeVisibleOutsideOfGrid(value, x: x, y: y) {
+                if grid.isTreeVisibleOutsideOfGrid(x: x, y: y) {
                     result.insert(.init(x: x, y: y))
                 }
             }
         }
 
-        return result
+        return result.count
+    }
+
+    func highestScenicScore(in grid: Grid) -> Int {
+        var scores: Set<Int> = []
+
+        for y in 0..<grid.height {
+            for x in 0..<grid.width {
+                scores.insert(grid.scenicScore(x: x, y: y))
+            }
+        }
+
+        return scores.max()!
     }
 
     public func runPart2() throws -> Int {
-        return 0
+        let input: [Int] = try String(contentsOf: inputURL).map(String.init).compactMap(Int.init)
+        let grid = Grid(width: 99, height: 99, memory: input)
+        return highestScenicScore(in: grid)
     }
 }
 
@@ -56,7 +69,8 @@ extension Day8 {
             set(newValue) { memory[y * width + x] = newValue }
         }
 
-        func isTreeVisibleOutsideOfGrid(_ value: Tile, x: Int, y: Int) -> Bool {
+        func isTreeVisibleOutsideOfGrid(x: Int, y: Int) -> Bool {
+            let value = self[x, y]
             func isVerticalRangeSatisfactory(_ range: Range<Int>) -> Bool {
                 range.map { y in self[x, y] }.allSatisfy { $0 < value }
             }
@@ -81,6 +95,47 @@ extension Day8 {
             if isRightClear { return true }
 
             return false
+        }
+
+        func scenicScore(x: Int, y: Int) -> Int {
+            let value = self[x, y]
+            var topDistance = 0
+            for yy in (0..<y).reversed() {
+                topDistance += 1
+                let t = self[x, yy]
+                if t >= value {
+                    break
+                }
+            }
+
+            var bottomDistance = 0
+            for yy in (y + 1)..<height {
+                bottomDistance += 1
+                let t = self[x, yy]
+                if t >= value {
+                    break
+                }
+            }
+
+            var leftDistance = 0
+            for xx in (0..<x).reversed() {
+                leftDistance += 1
+                let t = self[xx, y]
+                if t >= value {
+                    break
+                }
+            }
+
+            var rightDistance = 0
+            for xx in (x + 1)..<width {
+                rightDistance += 1
+                let t = self[xx, y]
+                if t >= value {
+                    break
+                }
+            }
+
+            return topDistance * bottomDistance * leftDistance * rightDistance
         }
     }
 }
