@@ -3,14 +3,6 @@ import Foundation
 public struct Day8 {
     public let inputURL = Bundle.module.url(forResource: "Input/day8", withExtension: "txt")!
 
-    let exampleInput = """
-30373
-25512
-65332
-33549
-35390
-"""
-
     public init() {}
 
     public func runPart1() throws -> Int {
@@ -64,39 +56,6 @@ extension Day8 {
             set(newValue) { memory[y * width + x] = newValue }
         }
 
-        /// Checks whether a point is within the grid.
-        func isInBounds(x: Int, y: Int) -> Bool {
-            return x >= 0 && x < width &&
-            y >= 0 && y < height
-        }
-
-        /// Gets the points directly adjacent to a point.
-        func adjacentPoints(x: Int, y: Int) -> [Point] {
-            var result: [Point] = []
-            for relX in (-1...1) {
-                for relY in (-1...1) {
-                    let absX = x + relX
-                    let absY = y + relY
-                    if !(relX == 0 && relY == 0) && isInBounds(x: absX, y: absY) {
-                        result.append(Point(x: absX, y: absY))
-                    }
-                }
-            }
-            return result
-        }
-
-        func rowAndColumnNotIncluding(x: Int, y: Int) -> Set<Point> {
-            var result: Set<Point> = []
-            for relX in (0..<width) {
-                for relY in (0..<height) {
-                    if (relX == x || relY == y) && !(relX == x && relY == y) && isInBounds(x: relX, y: relY) {
-                        result.insert(Point(x: relX, y: relY))
-                    }
-                }
-            }
-            return result
-        }
-
         func isTreeVisibleOutsideOfGrid(_ value: Tile, x: Int, y: Int) -> Bool {
             func isVerticalRangeSatisfactory(_ range: Range<Int>) -> Bool {
                 range.map { y in self[x, y] }.allSatisfy { $0 < value }
@@ -122,27 +81,6 @@ extension Day8 {
             if isRightClear { return true }
 
             return false
-        }
-
-        /// Get a single horizontal row of the grid
-        func row(y: Int) -> [Tile] {
-            let start = y * width
-            let end = start + width
-            return Array(memory[start..<end])
-        }
-
-        /// Get a single vertical column of the grid
-        func col(x: Int) -> [Tile] {
-            (0..<height).map { y in
-                memory[y * width + x]
-            }
-        }
-    }
-
-    func debugPrint(_ grid: Grid) {
-        for row in 0..<grid.height {
-            let offset = row * grid.width
-            print(grid.memory[offset..<(offset + grid.width)].map(String.init).joined(separator: ""))
         }
     }
 }
