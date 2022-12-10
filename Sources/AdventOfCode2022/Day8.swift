@@ -24,9 +24,7 @@ public struct Day8 {
     func highestScenicScore(in grid: Grid) -> Int {
         grid.map(grid.scenicScore).max()!
     }
-}
 
-extension Day8 {
     struct Grid {
         typealias Tile = Int
 
