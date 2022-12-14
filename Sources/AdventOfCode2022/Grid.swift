@@ -1,6 +1,5 @@
 import Foundation
 
-
 struct Grid {
     typealias Tile = Int
 
@@ -23,6 +22,10 @@ struct Grid {
     subscript(x: Int, y: Int) -> Tile {
         get { memory[y * width + x] }
         set(newValue) { memory[y * width + x] = newValue }
+    }
+
+    func point(at index: Int) -> Point {
+        Point(x: index % width, y: index / width)
     }
 
     /// Checks whether a point is within the grid.
