@@ -71,22 +71,8 @@ public struct Day9 {
             head.y += movement.y
             tail = newPosition(of: tail, toFollow: head)
             visitedPoints.insert(tail)
-            printState(head: head, tail: tail, visitedPoints: visitedPoints)
         }
         return visitedPoints
-    }
-
-    func printState(head: Point, tail: Point, visitedPoints: Set<Point>) {
-        let minX = visitedPoints.min(by: { $0.x < $1.x })!.x
-        let maxX = visitedPoints.max(by: { $0.x < $1.x })!.x
-        let minY = visitedPoints.min(by: { $0.y < $1.y })!.y
-        let maxY = visitedPoints.max(by: { $0.y < $1.y })!.y
-
-        for y in (minY...maxY) {
-            (minX...maxX).map { x in
-
-            }
-        }
     }
 
     func newPosition(of point: Point, toFollow target: Point) -> Point {
@@ -94,6 +80,8 @@ public struct Day9 {
         if distance == 0 || distance == 1 {
             return point
         } else if distance == 2 {
+            let offsetX = point.x - target.x
+            let offsetY = point.y - target.y
             if point.x == target.x {
                 // We've moved only along the Y axis
                 if point.y < target.y {
@@ -109,11 +97,11 @@ public struct Day9 {
                     return Point(x: target.x + 1, y: target.y)
                 }
             } else {
-                let corners = cornerPoints(x: target.x, y: target.y)
-                let sorted = corners.sorted(by: { lhs, rhs in
-                    self.distance(from: point, to: lhs) < self.distance(from: point, to: rhs)
-                })
-                return sorted.first!
+                if abs(offsetX) > abs(offsetY) {
+                    return Point(x: offsetX < 0 ? target.x - 1 : target.x + 1, y: target.y)
+                } else {
+                    return Point(x: target.x, y: offsetY < 0 ? target.y - 1 : target.y + 1)
+                }
             }
         } else {
             fatalError("Distance cannot be greater than 1. Input error.")
@@ -128,20 +116,5 @@ public struct Day9 {
 
     public func runPart2() throws -> Int {
         return 0
-    }
-
-    /// Gets the points directly adjacent to a given point horizontally, vertically and diagonally.
-    func cornerPoints(x: Int, y: Int) -> [Point] {
-        var result: [Point] = []
-        for relX in (-1...1) {
-            for relY in (-1...1) {
-                let absX = x + relX
-                let absY = y + relY
-                if absX != x && absY != y {
-                    result.append(Point(x: absX, y: absY))
-                }
-            }
-        }
-        return result
     }
 }
