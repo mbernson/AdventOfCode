@@ -10,6 +10,12 @@ struct Grid2D<Tile> {
     let height: Int
     var memory: [Tile]
 
+    init(width: Int, height: Int, initialTileValue: Tile) {
+        self.width = width
+        self.height = height
+        self.memory = Array(repeating: initialTileValue, count: width * height)
+    }
+
     init(width: Int, height: Int, memory: [Tile]) {
         assert(memory.count == width * height, "Incorrect number of tiles given")
         self.width = width
