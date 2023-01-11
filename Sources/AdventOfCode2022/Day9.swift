@@ -35,6 +35,30 @@ public struct Day9 {
         static let zero = Point(x: 0, y: 0)
     }
 
+    public func runPart1() throws -> Int {
+        runPart1(input: try String(contentsOf: inputURL))
+    }
+
+    func runPart1(input: String) -> Int {
+        let commands = parseInput(input)
+        let movements = commands.flatMap { (direction, quantity) in
+            Array(repeating: direction, count: quantity)
+        }
+        return visitedPoints(afterApplying: movements).count
+    }
+
+    public func runPart2() throws -> Int {
+        runPart2(input: try String(contentsOf: inputURL))
+    }
+
+    func runPart2(input: String) -> Int {
+        let commands = parseInput(input)
+        let movements = commands.flatMap { (direction, quantity) in
+            Array(repeating: direction, count: quantity)
+        }
+        return visitedPoints(segments: 10, afterApplying: movements).count
+    }
+
     func parseInput(_ inputString: String) -> [Command] {
         inputString
             .components(separatedBy: "\n")
@@ -49,16 +73,21 @@ public struct Day9 {
             }
     }
 
-    public func runPart1() throws -> Int {
-        runPart1(input: try String(contentsOf: inputURL))
-    }
+    func visitedPoints(segments: Int, afterApplying movements: [Direction], startingPoint: Point = .zero) -> Set<Point> {
+        var visitedPoints: Set<Point> = []
+        var rope = Array(repeating: Point.zero, count: segments)
+        visitedPoints.insert(rope.last!)
+        for movement in movements {
+            rope[0].x += movement.x
+            rope[0].y += movement.y
 
-    func runPart1(input: String) -> Int {
-        let commands = parseInput(input)
-        let movements = commands.flatMap { (direction, quantity) in
-            Array(repeating: direction, count: quantity)
+            for index in 1..<segments {
+                rope[index] = newPosition(of: rope[index], toFollow: rope[index - 1])
+            }
+
+            visitedPoints.insert(rope.last!)
         }
-        return visitedPoints(afterApplying: movements).count
+        return visitedPoints
     }
 
     func visitedPoints(afterApplying movements: [Direction], startingPoint: Point = .zero) -> Set<Point> {
@@ -79,7 +108,7 @@ public struct Day9 {
         let distance = self.distance(from: point, to: target)
         if distance == 0 || distance == 1 {
             return point
-        } else if distance == 2 {
+        } else {
             let offsetX = point.x - target.x
             let offsetY = point.y - target.y
             if point.x == target.x {
@@ -97,14 +126,9 @@ public struct Day9 {
                     return Point(x: target.x + 1, y: target.y)
                 }
             } else {
-                if abs(offsetX) > abs(offsetY) {
-                    return Point(x: offsetX < 0 ? target.x - 1 : target.x + 1, y: target.y)
-                } else {
-                    return Point(x: target.x, y: offsetY < 0 ? target.y - 1 : target.y + 1)
-                }
+                // Diagonal move
+                return Point(x: point.x + (offsetX < 0 ? 1 : -1), y: point.y + (offsetY < 0 ? 1 : -1))
             }
-        } else {
-            fatalError("Distance cannot be greater than 1. Input error.")
         }
     }
 
@@ -112,9 +136,5 @@ public struct Day9 {
         let a = Double(other.x - point.x)
         let b = Double(other.y - point.y)
         return Int(sqrt(a * a + b * b))
-    }
-
-    public func runPart2() throws -> Int {
-        return 0
     }
 }
