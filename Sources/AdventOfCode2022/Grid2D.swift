@@ -10,6 +10,14 @@ struct Grid2D<Tile> {
     let height: Int
     var memory: [Tile]
 
+    var points: [Point] {
+        (0..<height).flatMap { y in
+            (0..<width).map { x in
+                Point(x: x, y: y)
+            }
+        }
+    }
+
     init(width: Int, height: Int, initialTileValue: Tile) {
         self.width = width
         self.height = height
@@ -17,7 +25,7 @@ struct Grid2D<Tile> {
     }
 
     init(width: Int, height: Int, memory: [Tile]) {
-        assert(memory.count == width * height, "Incorrect number of tiles given")
+        assert(memory.count == width * height, "Incorrect number of tiles given. Got \(memory.count) but should be \(width * height)")
         self.width = width
         self.height = height
         self.memory = memory
@@ -36,6 +44,11 @@ struct Grid2D<Tile> {
     subscript(x: Int, y: Int) -> Tile {
         get { memory[y * width + x] }
         set(newValue) { memory[y * width + x] = newValue }
+    }
+
+    subscript(point: Point) -> Tile {
+        get { memory[point.y * width + point.x] }
+        set(newValue) { memory[point.y * width + point.x] = newValue }
     }
 
     func point(at index: Int) -> Point {
@@ -63,6 +76,31 @@ struct Grid2D<Tile> {
                 if !(relX == 0 && relY == 0) && isInBounds(x: absX, y: absY) {
                     result.append(Point(x: absX, y: absY))
                 }
+            }
+        }
+        return result
+    }
+
+    func adjacentPointsNonDiagonal(to point: Point) -> [Point] {
+        adjacentPointsNonDiagonal(x: point.x, y: point.y)
+    }
+
+    func adjacentPointsNonDiagonal(x: Int, y: Int) -> [Point] {
+        var result: [Point] = []
+        for relX in (-1...1) {
+            let relY = 0
+            let absX = x + relX
+            let absY = y + relY
+            if !(relX == 0 && relY == 0) && isInBounds(x: absX, y: absY) {
+                result.append(Point(x: absX, y: absY))
+            }
+        }
+        for relY in (-1...1) {
+            let relX = 0
+            let absX = x + relX
+            let absY = y + relY
+            if !(relX == 0 && relY == 0) && isInBounds(x: absX, y: absY) {
+                result.append(Point(x: absX, y: absY))
             }
         }
         return result

@@ -44,6 +44,10 @@ case ["day11", "part1"]:
     print(Day11().runPart1())
 case ["day11", "part2"]:
     print(Day11().runPart2())
+case ["day12", "part1"]:
+    print(Day12().runPart1())
+case ["day12", "part2"]:
+    print(Day12().runPart2())
 
 case []:
     print("No subcommand given"); exit(1)
