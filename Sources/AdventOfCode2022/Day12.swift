@@ -38,7 +38,7 @@ public struct Day12 {
 
         var current = start
 
-        while true {
+        while !unvisited.isEmpty {
             let neighbors = grid.adjacentPointsNonDiagonal(to: current)
             for neighbor in neighbors {
                 if grid[neighbor] <= grid[current] + 1 {
@@ -50,17 +50,13 @@ public struct Day12 {
             }
             unvisited.remove(current)
 
-            if unvisited.isEmpty {
-                // We are done
-                break
-            }
-
-            // Move on to the closest unvisited point
-            let closest: Point = unvisited.min(by: { lhs, rhs in
+            let closest = unvisited.min(by: { lhs, rhs in
                 distances[lhs]! < distances[rhs]!
-            })!
-
-            current = closest
+            })
+            if let closest {
+                // Move on to the closest unvisited point
+                current = closest
+            }
         }
 
         return distances[end]!
