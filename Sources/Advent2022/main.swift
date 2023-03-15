@@ -40,6 +40,11 @@ case ["day9", "part1"]:
     print(try! Day9().runPart1())
 case ["day9", "part2"]:
     print(try! Day9().runPart2())
+case ["day10", "part1"]:
+    let day10 = Day10()
+    print(try! day10.runPart1(inputURL: day10.inputURL))
+case ["day10", "part2"]:
+    print(try! Day10().runPart2())
 case ["day11", "part1"]:
     print(Day11().runPart1())
 case ["day11", "part2"]:
