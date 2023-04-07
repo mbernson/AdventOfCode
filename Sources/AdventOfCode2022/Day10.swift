@@ -51,8 +51,36 @@ public struct Day10 {
         return result.reduce(0, +)
     }
 
-    public func runPart2() throws -> Int {
-        return 0
+    public func runPart2(inputURL: URL) throws {
+        let inputString = try String(contentsOf: inputURL)
+        let input = parseInstructions(from: inputString)
+
+        let width = 40
+        let height = 6
+        let max = width * height
+
+        var screen: [Bool] = Array(repeating: false, count: width * height)
+        var cpu = CPU(program: input)
+
+        for cycle in 0..<Int.max {
+            cpu.runCycle()
+
+            let spritePosition = (cpu.x - 1)...(cpu.x + 1)
+            let correctedRange = spritePosition.clamped(to: 0...max)
+            screen[cycle] = correctedRange.contains(position)
+
+            if cpu.program.isEmpty {
+                print("Program ran out!")
+                break
+            }
+        }
+
+        for y in 0..<height {
+            let rowStart = y * width
+            let rowEnd = rowStart + width
+            let row = screen[rowStart..<rowEnd]
+            print(row.map({ $0 == true ? "#" : "." }).joined())
+        }
     }
 
     struct CPU {
