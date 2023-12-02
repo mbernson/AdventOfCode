@@ -35,7 +35,7 @@ public struct Day2 {
                     }
                 }
             }
-            
+
             return turn.allSatisfy { key, value in
                 turn[key]! <= configuration[key]!
             }
@@ -67,7 +67,28 @@ public struct Day2 {
     }
 
     public func runPart2() throws -> Int {
-        return 0
+        let inputString = try String(contentsOf: inputURL)
+        let games: [Game] = inputString
+            .components(separatedBy: "\n")
+            .filter { !$0.isEmpty }
+            .map(parseIDFromLine)
+            .map(parseLineIntoGame)
+
+        return games.map { game -> Turn in
+            game.turns.reduce(into: emptyTurn) { total, turn in
+                for (key, value) in turn {
+                    if total[key]! < value {
+                        total[key] = value
+                    }
+                }
+            }
+        }
+        .map(power)
+        .reduce(0, +)
+    }
+
+    func power(of turn: Turn) -> Int {
+        turn["red"]! * turn["green"]! * turn["blue"]!
     }
 }
 
