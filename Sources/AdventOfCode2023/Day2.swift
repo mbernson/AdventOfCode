@@ -27,15 +27,7 @@ public struct Day2 {
             .map(parseLineIntoGame)
 
         return games.filter { game in
-            // Get maximum count per color from the game
-            let turn: Turn = game.turns.reduce(into: emptyTurn) { total, turn in
-                for (key, value) in turn {
-                    if total[key]! < value {
-                        total[key] = value
-                    }
-                }
-            }
-
+            let turn = combineHighestValues(of: game.turns)
             return turn.allSatisfy { key, value in
                 turn[key]! <= configuration[key]!
             }
@@ -74,17 +66,21 @@ public struct Day2 {
             .map(parseIDFromLine)
             .map(parseLineIntoGame)
 
-        return games.map { game -> Turn in
-            game.turns.reduce(into: emptyTurn) { total, turn in
-                for (key, value) in turn {
-                    if total[key]! < value {
-                        total[key] = value
-                    }
+        return games.map(\.turns)
+            .map(combineHighestValues)
+            .map(power)
+            .reduce(0, +)
+    }
+
+    /// Combines the highest values of red/green/blue of the turn into a single turn.
+    func combineHighestValues(of turns: [Turn]) -> Turn {
+        turns.reduce(into: emptyTurn) { total, turn in
+            for (key, value) in turn {
+                if total[key]! < value {
+                    total[key] = value
                 }
             }
         }
-        .map(power)
-        .reduce(0, +)
     }
 
     func power(of turn: Turn) -> Int {
