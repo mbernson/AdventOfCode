@@ -1,6 +1,6 @@
 import Foundation
 
-struct Grid2D<Tile> {
+struct Grid<Tile> {
     struct Point: Hashable, Equatable {
         let x: Int
         let y: Int
@@ -156,7 +156,7 @@ struct Grid2D<Tile> {
     }
 }
 
-func printGrid<Tile>(_ grid: Grid2D<Tile>, formatter: (Tile) -> String) {
+func printGrid<Tile>(_ grid: Grid<Tile>, formatter: (Tile) -> String) {
     for row in 0..<grid.height {
         let offset = row * grid.width
         print(grid.memory[offset..<(offset + grid.width)].map(formatter).joined(separator: ""))
