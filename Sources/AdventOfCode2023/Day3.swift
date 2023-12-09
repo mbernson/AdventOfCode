@@ -45,13 +45,61 @@ public struct Day3 {
         return part1(inputString: inputString, width: 140, height: 140)
     }
 
+    func part2(inputString: String, width: Int, height: Int) -> Int {
+        let grid = Grid(width: width, height: height, memory: inputString
+            .replacingOccurrences(of: "\n", with: "")
+            .map { $0 })
+        var numbers: [Grid<Character>.Point : Set<Int>] = [:]
+
+        for point in grid.points {
+            if grid[point] == "*" {
+                numbers[point] = []
+            }
+        }
+
+        var currentNumber = ""
+        var currentGears: [Grid<Character>.Point] = []
+
+        for point in grid.points {
+            if isNumber(grid[point]) {
+                currentGears += grid.adjacentPoints(to: point).filter { point in
+                    grid[point] == "*"
+                }
+
+                currentNumber.append(grid[point])
+
+                if point.x == grid.width - 1 {
+                    if !currentNumber.isEmpty {
+                        for gearPos in currentGears {
+                            numbers[gearPos]!.insert(Int(currentNumber)!)
+                        }
+                    }
+                    currentNumber.removeAll()
+                    currentGears.removeAll()
+                }
+            } else {
+                if !currentNumber.isEmpty {
+                    for gearPos in currentGears {
+                        numbers[gearPos]!.insert(Int(currentNumber)!)
+                    }
+                }
+                currentNumber.removeAll()
+                currentGears.removeAll()
+            }
+        }
+        var total = 0
+        for numbersSet in numbers.values {
+            let xs = Array(numbersSet)
+            if xs.count == 2 {
+                total += xs[0] * xs[1]
+            }
+        }
+        return total
+    }
+
     public func runPart2() throws -> Int {
         let inputString = try String(contentsOf: inputURL)
-        if inputString.isEmpty {
-            return 0
-        } else {
-            return 1
-        }
+        return part2(inputString: inputString, width: 140, height: 140)
     }
 
     let symbols = Set("/&$+-%#=*@".map { $0 })

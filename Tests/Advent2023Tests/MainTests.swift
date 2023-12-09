@@ -16,6 +16,7 @@ final class MainTests: XCTestCase {
 
     func test2023Day3() throws {
         XCTAssertEqual(try runAdventCommand(arguments: ["day3", "part1"]), "544664\n")
+        XCTAssertEqual(try runAdventCommand(arguments: ["day3", "part2"]), "84495585\n")
     }
 
     // MARK: Helpers
