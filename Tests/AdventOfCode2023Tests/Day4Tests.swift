@@ -11,7 +11,11 @@ final class Day4Tests: XCTestCase {
     Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
     """
 
-    func testExample() throws {
+    func testExamplePart1() throws {
         XCTAssertEqual(try Day4().part1(input: exampleInput), 13)
+    }
+    
+    func testExamplePart2() throws {
+        XCTAssertEqual(try Day4().part2(input: exampleInput), 30)
     }
 }
