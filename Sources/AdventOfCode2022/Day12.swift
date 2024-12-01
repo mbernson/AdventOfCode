@@ -8,10 +8,10 @@
 import Foundation
 
 public struct Day12 {
-    let grid: Grid2D<UInt8>
-    let exampleGrid: Grid2D<UInt8>
+    let grid: Grid<UInt8>
+    let exampleGrid: Grid<UInt8>
 
-    typealias Point = Grid2D<UInt8>.Point
+    typealias Point = Grid<UInt8>.Point
 
     public init() {
         let inputURL = Bundle.module.url(forResource: "Input/day12", withExtension: "txt")!
@@ -26,7 +26,7 @@ public struct Day12 {
         exampleGrid = .init(width: 8, height: 5, memory: exampleInput.compactMap(\.asciiValue))
     }
 
-    func solve(grid: Grid2D<UInt8>, start: Grid2D<UInt8>.Point, end: Grid2D<UInt8>.Point) -> Int {
+    func solve(grid: Grid<UInt8>, start: Grid<UInt8>.Point, end: Grid<UInt8>.Point) -> Int {
         var unvisited: Set<Point> = Set(grid.points)
         unvisited.remove(start)
 

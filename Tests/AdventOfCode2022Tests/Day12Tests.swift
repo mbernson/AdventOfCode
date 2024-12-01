@@ -2,10 +2,10 @@ import XCTest
 @testable import AdventOfCode2022
 
 final class Day12Tests: XCTestCase {
-    typealias Point = Grid2D<UInt8>.Point
+    typealias Point = Grid<UInt8>.Point
 
     var day12: Day12!
-    var grid: Grid2D<UInt8>!
+    var grid: Grid<UInt8>!
     var start: Point!
     var end: Point!
 

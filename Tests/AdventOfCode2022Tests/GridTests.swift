@@ -9,11 +9,11 @@ final class GridTests: XCTestCase {
 3 3 5 4 9
 3 5 3 9 0
 """
-    var grid: Grid2D<Int> = .init(width: 0, height: 0, memory: [])
+    var grid: Grid<Int> = .init(width: 0, height: 0, memory: [])
 
     override func setUp() {
         let input: [Int] = exampleInput.map(String.init).compactMap(Int.init)
-        grid = Grid2D(width: 5, height: 5, memory: input)
+        grid = Grid(width: 5, height: 5, memory: input)
     }
 
     func testGridInitWithMemory() {
@@ -23,7 +23,7 @@ final class GridTests: XCTestCase {
     }
 
     func testGridInitWithProvider() {
-        let grid = Grid2D<Int>(width: 5, height: 5) { point in
+        let grid = Grid<Int>(width: 5, height: 5) { point in
             0
         }
         XCTAssertEqual(grid.width, 5)

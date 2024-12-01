@@ -1,10 +1,12 @@
 import Foundation
 
+struct GridPoint: Hashable, Equatable {
+    let x: Int
+    let y: Int
+}
+
 struct Grid<Tile> {
-    struct Point: Hashable, Equatable {
-        let x: Int
-        let y: Int
-    }
+    typealias Point = GridPoint
 
     let width: Int
     let height: Int
