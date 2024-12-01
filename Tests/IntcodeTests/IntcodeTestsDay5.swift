@@ -1,6 +1,7 @@
 import XCTest
 @testable import Intcode
 
+@MainActor
 final class IntcodeTestsDay5: XCTestCase {
 
   func testInputOutput() throws {

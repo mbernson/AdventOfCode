@@ -84,16 +84,13 @@ public struct Day12 {
         let startingPoints: [Point] = grid.points.filter { point in
             grid[point.x, point.y] == startValue
         }
+        // Brute-force it
         var solutions: [Int] = []
-        let semaphore = DispatchSemaphore(value: 1)
-        // Brute-force it by spreading the shortest path calculation out over all CPU cores
-        DispatchQueue.concurrentPerform(iterations: startingPoints.count) { index in
+        for index in 0..<startingPoints.count {
             let start = startingPoints[index]
             let shortestDistance = solve(grid: grid, start: start, end: end)
-            semaphore.wait()
-            solutions.append(shortestDistance)
-            semaphore.signal()
             print("\(solutions.count)/\(startingPoints.count)")
+            solutions.append(shortestDistance)
         }
         return solutions.min()!
     }
