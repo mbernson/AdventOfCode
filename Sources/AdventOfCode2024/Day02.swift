@@ -20,6 +20,24 @@ struct Day02: AdventDay {
             .count
     }
 
+    func part2() -> Any {
+        return input
+            .filter { report in
+                if isSafe(report) {
+                    return true
+                } else {
+                    for i in 0..<report.count {
+                        let shortReport = report[0..<i] + report[(i + 1)..<report.count]
+                        if isSafe(Array(shortReport)) {
+                            return true
+                        }
+                    }
+                    return false
+                }
+            }
+            .count
+    }
+
     func isSafe(_ input: [Int]) -> Bool {
         let isIncreasing = input.windows(ofCount: 2).allSatisfy {
             $0.first! < $0.last!
