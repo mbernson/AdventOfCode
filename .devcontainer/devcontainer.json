@@ -1,0 +1,11 @@
+{
+    "name": "Advent of Code Swift",
+    "image": "docker.io/swift:6.1",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "swiftlang.swift-vscode"
+            ]
+        }
+    }
+}
