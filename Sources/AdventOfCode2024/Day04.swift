@@ -21,21 +21,22 @@ struct Day04: AdventDay {
     }
 
     func part1() throws -> Any {
-        grid.points.map(countNumberOfXmases).reduce(0, +)
+        // grid.points.map(countNumberOfXmases).reduce(0, +)
+        return 0
     }
-
-    private func countNumberOfXmases(startingAt point: GridPoint) -> Int {
-        let x = point.x, y = point.y, char = grid[x, y], n = xmas.count
-        var strings: [String] = []
-        for relX in 0..<n {
-            for relY in (0..<n) {
-                let absX = x + relX
-                let absY = y + relY
-                if isInBounds(x: absX, y: absY) {
-                    result.append(Point(x: absX, y: absY))
-                }
-            }
-        }
-        return strings.filter { $0 == xmas }.count
-    }
+//
+//    private func countNumberOfXmases(startingAt point: GridPoint) -> Int {
+//        let x = point.x, y = point.y, char = grid[x, y], n = xmas.count
+//        var strings: [String] = []
+//        for relX in 0..<n {
+//            for relY in (0..<n) {
+//                let absX = x + relX
+//                let absY = y + relY
+//                if isInBounds(x: absX, y: absY) {
+//                    result.append(Point(x: absX, y: absY))
+//                }
+//            }
+//        }
+//        return strings.filter { $0 == xmas }.count
+//    }
 }

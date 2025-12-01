@@ -13,18 +13,29 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/apple/swift-algorithms.git",
-      .upToNextMajor(from: "1.2.0")),
+      .upToNextMajor(from: "1.2.1")),
     .package(
       url: "https://github.com/apple/swift-collections.git",
-      .upToNextMajor(from: "1.1.4")),
+      .upToNextMajor(from: "1.3.0")),
     .package(
       url: "https://github.com/apple/swift-argument-parser.git",
-      .upToNextMajor(from: "1.5.0")),
-    .package(
-      url: "https://github.com/swiftlang/swift-format.git",
-      .upToNextMajor(from: "600.0.0")),
+      .upToNextMajor(from: "1.6.2")),
+//    .package(
+//      url: "https://github.com/swiftlang/swift-format.git",
+//      .upToNextMajor(from: "602.0.0")),
   ],
   targets: [
+    // 2025 solutions
+    .executableTarget(
+        name: "AdventOfCode2025",
+        dependencies: dependencies,
+        resources: [.copy("Data")]
+    ),
+    .testTarget(
+        name: "AdventOfCode2025Tests",
+        dependencies: ["AdventOfCode2025"] + dependencies
+    ),
+
     // 2024 solutions
     .executableTarget(
       name: "AdventOfCode2024",
