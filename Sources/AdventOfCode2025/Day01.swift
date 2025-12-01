@@ -15,7 +15,7 @@ struct Day01: AdventDay {
         case left = "L"
     }
 
-    func part1() -> Any {
+    private func solve(countClicks: Bool) -> Int {
         let min = 0
         let max = 99
         var dialPosition = 50
@@ -33,6 +33,9 @@ struct Day01: AdventDay {
                     } else {
                         dialPosition -= 1
                     }
+                    if countClicks && dialPosition == 0 {
+                        numberOfTimesPointingAt0 += 1
+                    }
                     amount -= 1
                 }
             case .right:
@@ -43,15 +46,26 @@ struct Day01: AdventDay {
                     } else {
                         dialPosition += 1
                     }
+                    if countClicks && dialPosition == 0 {
+                        numberOfTimesPointingAt0 += 1
+                    }
                     amount -= 1
                 }
             }
 
-            if dialPosition == 0 {
+            if !countClicks && dialPosition == 0 {
                 numberOfTimesPointingAt0 += 1
             }
         }
 
         return numberOfTimesPointingAt0
+    }
+
+    func part1() -> Any {
+        return solve(countClicks: false)
+    }
+
+    func part2() -> Any {
+        return solve(countClicks: true)
     }
 }
