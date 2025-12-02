@@ -13,13 +13,24 @@ struct Day02Tests {
     @Test func testPart1() {
         let challenge = Day02(data: testData)
 
-        #expect(challenge.isInvalidID(1) == false)
-        #expect(challenge.isInvalidID(123) == false)
-        #expect(challenge.isInvalidID(22) == true)
-        #expect(challenge.isInvalidID(1010) == true)
-        #expect(challenge.isInvalidID(1188511885) == true)
-        #expect(challenge.isInvalidID(38593859) == true)
+        #expect(challenge.isInvalidIDPart1(1) == false)
+        #expect(challenge.isInvalidIDPart1(123) == false)
+        #expect(challenge.isInvalidIDPart1(22) == true)
+        #expect(challenge.isInvalidIDPart1(1010) == true)
+        #expect(challenge.isInvalidIDPart1(1188511885) == true)
+        #expect(challenge.isInvalidIDPart1(38593859) == true)
 
         #expect(String(describing: challenge.part1()) == "1227775554")
+    }
+
+    @Test func testPart2() {
+        let challenge = Day02(data: testData)
+
+        #expect(challenge.isInvalidIDPart2(12341234) == true)
+//        #expect(challenge.isInvalidIDPart2(123123123) == true)
+//        #expect(challenge.isInvalidIDPart2(1212121212) == true)
+//        #expect(challenge.isInvalidIDPart2(1111111) == true)
+
+        #expect(String(describing: challenge.part2()) == "4174379265")
     }
 }
