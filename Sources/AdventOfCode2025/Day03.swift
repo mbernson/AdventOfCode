@@ -10,30 +10,28 @@ struct Day03: AdventDay {
 
     func part1() -> Any {
         lines.reduce(0) { acc, line in
-            return acc + maximumJoltage(line, length: 2)
+            acc + maximumJoltage(line, numberOfBatteries: 2)
         }
     }
 
-    func maximumJoltage(_ substring: Substring, length: Int, startIndex: Int = 0) -> Int {
-        let characters = substring.map(String.init)
+    func maximumJoltage(_ substring: Substring, numberOfBatteries: Int) -> Int {
+        let line = substring.map { $0.wholeNumberValue! }
 
-        let endIndex = characters.count - length
-        var max = 0
-        if length == 1 {
-            for i in startIndex...endIndex {
-                let total = Int(characters[i])!
-                if total > max {
-                    max = total
-                }
-            }
-        } else {
-            for i in startIndex...endIndex {
-                let total = Int(characters[i] + String(maximumJoltage(substring, length: length - 1, startIndex: i + 1)))!
-                if total > max {
-                    max = total
-                }
-            }
+        var left = 0
+        var digits: [Int] = []
+        for n in stride(from: numberOfBatteries - 1, through: 0, by: -1) {
+            let right = line.count - n
+            let d = line[left..<right].max() ?? line.last!
+            left += Array(line[left...]).firstIndex(of: d)! + 1
+            digits.append(d)
         }
-        return max
+
+        return Int(digits.map(String.init).joined())!
+    }
+
+    func part2() -> Any {
+        lines.reduce(0) { acc, line in
+            acc + maximumJoltage(line, numberOfBatteries: 12)
+        }
     }
  }
