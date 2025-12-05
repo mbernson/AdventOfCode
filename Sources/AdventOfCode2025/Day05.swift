@@ -27,24 +27,13 @@ struct Day05: AdventDay {
     /// Merges the ranges where the lower bound of the next one overlaps with the upper bound of the previous one.
     /// This function assumes that the input is sorted already.
     func mergeRanges(ranges: [ClosedRange<Int>]) -> [ClosedRange<Int>] {
-        var result: [ClosedRange<Int>] = []
-
-        var i = 1
-        var current = ranges[0]
-        while i < ranges.count {
-            let next = ranges[i]
-
-            if next.lowerBound <= current.upperBound {
-                current = min(current.lowerBound, next.lowerBound)...max(current.upperBound, next.upperBound)
+        return ranges.dropFirst().reduce(into: [ranges[0]]) { result, next in
+            if let last = result.last, next.lowerBound <= last.upperBound {
+                result[result.count - 1] = min(last.lowerBound, next.lowerBound)...max(last.upperBound, next.upperBound)
             } else {
-                result.append(current)
-                current = next
+                result.append(next)
             }
-            i += 1
         }
-        result.append(current)
-
-        return result
     }
 
     func part2() -> Any {
