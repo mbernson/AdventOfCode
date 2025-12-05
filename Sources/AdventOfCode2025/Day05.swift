@@ -14,13 +14,48 @@ struct Day05: AdventDay {
         }
         return (freshRanges, ingredients)
     }
-    
+
     func part1() -> Any {
         let (freshRanges, ingredients) = input
         return ingredients.filter { ingredient in
-            freshRanges.contains(where: { range in
+            freshRanges.contains { range in
                 range.contains(ingredient)
-            })
+            }
         }.count
+    }
+
+    /// Merges the ranges where the lower bound of the next one overlaps with the upper bound of the previous one.
+    /// This function assumes that the input is sorted already.
+    func mergeRanges(ranges: [ClosedRange<Int>]) -> [ClosedRange<Int>] {
+        var result: [ClosedRange<Int>] = []
+
+        var i = 1
+        var current = ranges[0]
+        while i < ranges.count {
+            let next = ranges[i]
+
+            if next.lowerBound <= current.upperBound {
+                current = min(current.lowerBound, next.lowerBound)...max(current.upperBound, next.upperBound)
+            } else {
+                result.append(current)
+                current = next
+            }
+            i += 1
+        }
+        result.append(current)
+
+        return result
+    }
+
+    func part2() -> Any {
+        var (freshRanges, _) = input
+
+        freshRanges = freshRanges.sorted(by: { lhs, rhs in
+            lhs.lowerBound < rhs.lowerBound && lhs.upperBound < rhs.upperBound
+        })
+
+        freshRanges = mergeRanges(ranges: freshRanges)
+
+        return freshRanges.map(\.count).reduce(0, +)
     }
 }
