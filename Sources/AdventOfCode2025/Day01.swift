@@ -4,7 +4,7 @@ struct Day01: AdventDay {
     var data: String
 
     // Splits input data into its component parts and convert from string.
-    var entities: [String] {
+    var input: [String] {
         data.split(separator: "\n")
             .filter { !$0.isEmpty }
             .map(String.init)
@@ -21,7 +21,7 @@ struct Day01: AdventDay {
         var dialPosition = 50
         var numberOfTimesPointingAt0 = 0
 
-        for var line in entities {
+        for var line in input {
             let direction = DialDirection(rawValue: String(line.removeFirst()))!
             var amount = Int(String(line))!
             switch direction {
