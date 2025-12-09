@@ -38,9 +38,9 @@ struct Day08Tests {
         #expect(a != b)
         #expect(a == a2)
         #expect(a.hashValue == a2.hashValue)
-        #expect(Day08.Pair(a, b) == Day08.Pair(b, a))
-        #expect(Day08.Pair(a, b) == Day08.Pair(b, a))
-        #expect(Day08.Pair(a, b) != Day08.Pair(b, c))
+        #expect(Pair(a, b) == Pair(b, a))
+        #expect(Pair(a, b) == Pair(b, a))
+        #expect(Pair(a, b) != Pair(b, c))
     }
 
     @Test func testCircuits() {

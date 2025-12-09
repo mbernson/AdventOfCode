@@ -27,31 +27,9 @@ struct Day08: AdventDay {
         return Double(x * x + y * y + z * z).squareRoot()
     }
 
-    struct Pair: Hashable {
-        let a: Point
-        let b: Point
-
-        init(_ a: Point, _ b: Point) {
-            self.a = a
-            self.b = b
-        }
-
-        func hash(into hasher: inout Hasher) {
-            let ha = a.hashValue
-            let hb = b.hashValue
-            hasher.combine(ha &+ hb)
-            hasher.combine(ha &* hb)
-        }
-
-        static func == (lhs: Self, rhs: Self) -> Bool {
-            (lhs.a == rhs.a && lhs.b == rhs.b)
-                || (lhs.a == rhs.b && lhs.b == rhs.a)
-        }
-    }
-
-    func computeAllDistances() -> [Pair : Distance] {
+    func computeAllDistances() -> [Pair<Point> : Distance] {
         let points = input
-        var distances: [Pair : Distance] = [:]
+        var distances: [Pair<Point> : Distance] = [:]
         for point in points {
             for other in points where other != point {
                 let pair = Pair(point, other)
