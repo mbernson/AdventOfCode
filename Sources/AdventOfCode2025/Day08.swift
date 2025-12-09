@@ -99,4 +99,40 @@ struct Day08: AdventDay {
         circuits(numberOfConnections: input.count == 20 ? 10 : 1000)
             .map(\.count).max(count: 3).reduce(1, *)
     }
+
+    func part2() -> Any {
+        let closestPairs = computeAllDistances()
+            .sorted(by: { lhs, rhs in
+                lhs.value < rhs.value
+            })
+            .map { $0.key }
+
+        var circuits: [Circuit] = input.map { Circuit([$0]) }
+
+        var i = 0
+        while true {
+            let pair = closestPairs[i]
+            let circuitIndexA = circuits.firstIndex(where: { $0.contains(pair.a) })
+            let circuitIndexB = circuits.firstIndex(where: { $0.contains(pair.b) })
+            if let circuitIndexA, let circuitIndexB, circuitIndexA != circuitIndexB {
+                // Exit condition
+                if circuits.count == 2 {
+                    return pair.a.x * pair.b.x
+                }
+
+                // Merge the circuits
+                let union = circuits[circuitIndexA].union(circuits[circuitIndexB])
+                let smallerIndex = min(circuitIndexA, circuitIndexB)
+                let largerIndex = max(circuitIndexA, circuitIndexB)
+                circuits[smallerIndex] = union
+                circuits.remove(at: largerIndex)
+            } else if circuitIndexA != nil || circuitIndexB != nil {
+                // Add the pair to the existing circuit
+                let circuitIndex = (circuitIndexA ?? circuitIndexB)!
+                circuits[circuitIndex].insert(pair.a)
+                circuits[circuitIndex].insert(pair.b)
+            }
+            i += 1
+        }
+    }
 }

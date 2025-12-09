@@ -66,4 +66,9 @@ struct Day08Tests {
         let challenge = Day08(data: testData)
         #expect(String(describing: challenge.part1()) == "40")
     }
+
+    @Test func testPart2() {
+        let challenge = Day08(data: testData)
+        #expect(String(describing: challenge.part2()) == "25272")
+    }
 }
