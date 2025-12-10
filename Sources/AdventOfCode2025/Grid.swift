@@ -27,6 +27,12 @@ struct Grid<Tile: Sendable>: Sendable {
         self.memory = memory
     }
 
+    init(width: Int, height: Int, repeating tile: Tile) {
+        self.width = width
+        self.height = height
+        self.memory = Array(repeating: tile, count: width * height)
+    }
+
     init(width: Int, height: Int, valueProvider: (Point) -> Tile) {
         self.width = width
         self.height = height

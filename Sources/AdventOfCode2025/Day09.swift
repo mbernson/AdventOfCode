@@ -17,11 +17,13 @@ struct Day09: AdventDay {
     enum Tile: Hashable, CustomStringConvertible {
         case empty
         case red
+        case green
 
         var description: String {
             switch self {
             case .empty: "."
             case .red: "#"
+            case .green: "X"
             }
         }
     }
@@ -55,5 +57,19 @@ struct Day09: AdventDay {
         let areas = computeAllAreas()
         let largestRectangle = areas.max { $0.value < $1.value }!
         return largestRectangle.value
+    }
+
+    func part2() -> Any {
+        let points = input
+        let width = input.max(by: { $0.x < $1.x })!.x + 1
+        let height = input.max(by: { $0.y < $1.y })!.y + 1
+        var grid = Grid<Tile>(width: width, height: height, repeating: .empty)
+        for point in points {
+            grid[point] = .red
+        }
+
+        printGrid(grid, formatter: \.description)
+
+        return 42
     }
 }
